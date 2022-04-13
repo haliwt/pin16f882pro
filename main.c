@@ -13,8 +13,23 @@
 /*
  * 
  */
-void  main(void) {
-
+void  main(void) 
+{
+      
+    uint8_t keyValue;
+	DHT11_Init();
+	TMR0_Initialize();
+    
+    
+    while(1)
+    {
+    	keyValue = KEY_Scan();
+		CheckRun_Mode(keyValue);
+		
+    
+    }
+    
+    
     
 }
 

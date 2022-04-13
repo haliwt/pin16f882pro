@@ -1,28 +1,27 @@
 #include "../inc/dht11.h"
 
+DHT11_info* dht11_t;
 static uint8_t DHT11ReadBuyte(void);
 
 void DHT11_Init(void)
 {
-
-
-
-
+    TRISAbits.TRISA5 = 1 ; //gpio as input port
+    ANSELbits.ANS4 = 0 ;  //gpio as digital port
 
 }
 
 
 
-void DHT11_ReadInfo_Value(DHT11_info *temp)
+void DHT11_ReadInfo_Value(void)
 {
 
-    temp->Humidity_high  = DHT11ReadBuyte();
-    temp->Humidify_low   = DHT11ReadBuyte();
+    dht11_t->Humidity_high  = DHT11ReadBuyte();
+    dht11_t->Humidify_low   = DHT11ReadBuyte();
 
-    temp->Temperature_high = DHT11ReadBuyte();
-    temp ->Temperature_low   =  DHT11ReadBuyte();
+    dht11_t->Temperature_high = DHT11ReadBuyte();
+    dht11_t ->Temperature_low   =  DHT11ReadBuyte();
 
-    temp->DHT11_CAC = DHT11ReadBuyte();
+    dht11_t->DHT11_CAC = DHT11ReadBuyte();
 
 
 
