@@ -6,9 +6,27 @@
 volatile uint16_t timer1ReloadVal;
 void (*TMR1_InterruptHandler)(void);
 
+static void TIMER1_CallBack_Fun(void);
+
 /**
-  Section: TMR1 APIs
- * 
+ **
+*
+*Functin Name: void TIMER1_Init(void)
+*Funciton : timer1 is 1ms 
+            prescaler =1
+*           Timer0 overflow = 256 * prescaler * (__XTAL_FREQ / 4)= 256 * 4 * 1us = 1024us = 1.024ms
+*           TMR1H:TMR1L = [65536-(__XTAL-FREQ/4)/prescaler * Timer0 overflow(s)]
+*				 =(65536 - [(8000000/4)/prscaler] * 0.001s) -1 = 65536 - 2000= 63535
+*           Tim is need timer ,explame 1000us -unit us
+*           Freq = system clock frequency is = 8MHz 
+*           prescaler = 1,2,4,8,
+			prscale=1
+*           TMR1H:TMR1L = 65536-[(Tim*Freq)/(4*precals)] -1=65536-((1000 * 8)/(4*1))=63536-2000=63536 =0xF830
+            prscaler = 8 
+*           TMR1H:TMR1L = 65536-[(Tim*Freq)/(4*precals)] -1=65536-((1000 * 8)/(4*8))=65536-250 =65286 =0xff06
+*
+*           prescaler = 8:
+*           TMR1H:TMR1L =65536 -(Times)/(4x1/freq * prescaler) = 65536- 1000us/(4*0.125 * 8) =65536-250 =65286
 */
 
 void TMR1_Initialize(void)
@@ -122,4 +140,36 @@ void TMR1_SetInterruptHandler(void (* InterruptHandler)(void)){
 void TMR1_DefaultInterruptHandler(void){
     // add your TMR1 interrupt custom code
     // or set custom function using TMR1_SetInterruptHandler()
+}
+/*********************************************************************
+*
+*Functin Name:static void TIMER1_CallBack_Fun(void)
+*Function:
+*Input Ref:NO
+*Return Ref:NO
+*
+**********************************************************************/
+static void TIMER1_CallBack_Fun(void)
+{
+	
+     static uint16_t i,ti;
+	 i++ ;
+	 if(i>999){ //1s
+
+       i=0;
+	   ti++;
+	   if(ti==1){
+           cmd_t.gCmd_dispTimerTask=1;
+	   }
+	   else{
+           cmd_t.gCmd_dispTimerTask=0;
+           ti=0;
+
+	   }
+
+	 }
+	 
+	 
+
+
 }

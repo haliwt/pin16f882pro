@@ -17,8 +17,10 @@ void  main(void)
 {
       
     uint8_t keyValue;
+	LED_Init();
 	DHT11_Init();
 	TMR0_Initialize();
+	TM1617_GPIO_Iint();
     
     
     while(1)

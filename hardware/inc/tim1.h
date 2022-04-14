@@ -8,38 +8,7 @@
   Section: TMR1 APIs
 */
 
-/**
-  @Summary
-    Initializes the TMR1
 
-  @Description
-    This routine initializes the TMR1.
-    This routine must be called before any other TMR1 routine is called.
-    This routine should only be called once during system initialization.
-
-  @Preconditions
-    None
-
-  @Param
-    None
-
-  @Returns
-    None
-
-  @Comment
-    
-
-  @Example
-    <code>
-    main()
-    {
-        // Initialize TMR1 module
-        TMR1_Initialize();
-
-        // Do something else...
-    }
-    </code>
-*/
 void TMR1_Initialize(void);
 
 /**

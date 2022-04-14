@@ -3,6 +3,7 @@
 
 volatile uint8_t timer0ReloadVal;
 void (*TMR0_InterruptHandler)(void);
+static void TIMER0_CallBack_Fun(void);
 /**
  * Tim  need timer times setup example 10 000us  
  * Freq = system osc frequency 8MHz
@@ -75,6 +76,7 @@ void TMR0_ISR(void)
 void TMR0_CallBack(void)
 {
     // Add your custom callback code here
+    TMR0_InterruptHandler=  TIMER0_CallBack_Fun;
 
     if(TMR0_InterruptHandler)
     {
@@ -89,4 +91,17 @@ void TMR0_SetInterruptHandler(void (* InterruptHandler)(void)){
 void TMR0_DefaultInterruptHandler(void){
     // add your TMR0 interrupt custom code
     // or set custom function using TMR0_SetInterruptHandler()
+}
+//timer0 is 10ms 
+static void TIMER0_CallBack_Fun(void)
+{
+   static uint16_t j;
+   j++;
+   if(j >99){
+   	  j=0;
+      cmd_t.gCmd_breathLed++;
+   
+   }
+
+
 }

@@ -4,10 +4,11 @@
 #include "../../main.h"
 
 #define KEY_POWER_RC3_SetDigitalInput()    		do { TRISCbits.TRISC3 = 1; } while(0)
-#define KEY_POWER_RC3_SetDigitalOutput()   			do { TRISAbits.TRISC3 = 0; } while(0)
+//#define KEY_POWER_RC3_SetDigitalOutput()   		do { TRISCbits.TRISC3 = 0; } while(0)
 
-#define KEY_TIMER_RC0_SetDighitalInput()         do { TRISCbits.TRISC0 = 1; } while(0)  //gpio as input 
-
+#define KEY_TIMER_RC0_SetDigitalInput()         do { TRISCbits.TRISC0 = 1; } while(0)  //gpio as input 
+#define KEY_INC_RA6_SetDigitalInput()           do { TRISAbits.TRISA6 = 1; } while(0)  //gpio as input 
+#define KEY_DEC_RA7_SetDigitalInput()           do { TRISAbits.TRISA7 = 1; } while(0)  //gpio as input
 
 
 
@@ -17,13 +18,13 @@
 #define KEY_DEC_RA7_GetValue()			   PORTAbits.RA7
 
 
-#define		_KEY_ALL_OFF				0X1F
+#define		_KEY_ALL_OFF				    0X1F
 
 //normal times be pressed key
-#define		_KEY_TRG_1_POWER     			0x01  //WK_UP
-#define		_KEY_TRG_2_TIMER     			0x02  //??????--???
-#define		_KEY_TRG_3_ADD    			    0x04   //????
-#define		_KEY_TRG_4_DEC     			    0x08
+#define		_KEY_TRG_1_POWER     			0x01  //POER
+#define		_KEY_TRG_2_TIMER     			0x02  //TIMER
+#define		_KEY_TRG_3_ADD    			    0x04   //+
+#define		_KEY_TRG_4_DEC     			    0x08   //-
 // combination of buttons 
 #define		_KEY_TRG_5_WINDTI   			0x11   //?????
 #define		_KEY_TRG_6_WINDTI   			0x12   //?????
@@ -68,7 +69,7 @@ typedef  struct  _state_
  }state;
 }key_types;
 
-
+key_types key;
 
 
 void KEY_Init(void);

@@ -1,6 +1,7 @@
    #include "../inc/run.h"
 #include "../../main.h"
 
+CMDRUN_T cmd_t;
 
 void CheckRun_Mode(unsigned char keyvalue)
 {
@@ -34,7 +35,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 		break;
 		
 
-		case timerOn: //long 
+		case timerOn: //long time be pressed
 
 		break;
 

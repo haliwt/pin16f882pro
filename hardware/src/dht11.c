@@ -23,7 +23,15 @@ void DHT11_ReadInfo_Value(void)
 
     dht11_t->DHT11_CAC = DHT11ReadBuyte();
 
+	//Smg display Digital -Temp
+	if(cmd_t.gCmd_dispTimerTask ==0){
+	    SmgDisplay_Numbers(0x0A,dht11_t->Temperature_high,dht11_t ->Temperature_low);
+	}
+	else{
+     //Smg display Digital - humidity 
+     SmgDisplay_Numbers(0X0A, dht11_t->Humidity_high ,dht11_t->Humidify_low);
 
+	}
 
 }
 

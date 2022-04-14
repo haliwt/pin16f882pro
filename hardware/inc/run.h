@@ -4,6 +4,8 @@
 
 typedef struct _CMDRUN_{
     uint8_t gCmd_KeyOrder;
+	uint8_t gCmd_dispTimerTask;
+	uint8_t gCmd_breathLed;
 
 
 }CMDRUN_T;
@@ -16,7 +18,8 @@ enum runcmd{
 	powerOn  = 0x01,
 	adjustIncreas = 0x02,
 	adjustDecreas = 0x03,
-	timerOn = 0X04,
+	dispTiimer  = 0x04,
+	timerOn = 0X05,
 
 
 };

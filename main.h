@@ -24,6 +24,8 @@
 #include "hardware/inc/ultrasonic.h"
 #include "hardware/inc/smg.h"
 #include "hardware/inc/interrupt_manager.h"
+#include "hardware/inc/tm1617.h"
+
 
 #ifdef	__cplusplus
 extern "C" {
