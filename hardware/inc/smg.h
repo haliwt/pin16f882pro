@@ -49,7 +49,7 @@ void SmgDisplay_Char(void);
 
 void SmgDisplay_DynamicTemperatureNum(void);
 
-void SmgDisplay_TimesNum(void);
+void SmgDisplay_DynamicTimeNum(void);
 
 
 

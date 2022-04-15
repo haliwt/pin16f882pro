@@ -72,6 +72,7 @@ void CheckRun_Mode(unsigned char keyvalue)
  					Beep_Fun();
 					if(cmd_t.setTimeStyle ==0){
 					  Temperature_AddValue();
+					  PTC_ControlFun();
 					}
 					else{
 
@@ -98,6 +99,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 							
 					   		
 							Temperature_DecValue();
+							PTC_ControlFun();
 						}
 						else{
 						   
@@ -167,10 +169,11 @@ void RunCommand(void)
 		  
 		    if(cmd_t.setTimeStyle ==0){
 			   SmgDisplay_DynamicTemperatureNum();
+			   
 
 		    }
 			else{
-				SmgDisplay_TimesNum();
+				SmgDisplay_DynamicTimeNum();
 
 			}
 			cmd_t.keyDec++ ;
@@ -188,7 +191,7 @@ void RunCommand(void)
 				SmgDisplay_DynamicTemperatureNum();
 		   }
 		   else{
-				SmgDisplay_TimesNum();
+				SmgDisplay_DynamicTimeNum();
 
 		   }
 		
@@ -201,16 +204,16 @@ void RunCommand(void)
 		break;
 
 		case dispTiimer : //
+		   cmd_t.gCmd_dispTemperatureTask=0;
+			DHT11_DispSmg_Value();
 			cmd_t.keyDec++ ;
-			 cmd_t.keyLongTimer++;
-			  cmd_t.keyInc++;
+			cmd_t.keyLongTimer++;
+			cmd_t.keyInc++;
 			
 			  
-
-
 		break;
 		case timerOn: //long time be pressed
-		   
+		    SmgDisplay_DynamicTimeNum();
 			cmd_t.keyDec++ ;
 			cmd_t.keyTimer++;
 			cmd_t.keyInc++;

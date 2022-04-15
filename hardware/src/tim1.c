@@ -160,10 +160,10 @@ static void TIMER1_CallBack_Fun(void)
        i=0;
 	   ti++;
 	   if(ti==1){
-           cmd_t.gCmd_dispTimerTask=1;
+           cmd_t.gCmd_dispTemperatureTask=1;
 	   }
 	   else{
-           cmd_t.gCmd_dispTimerTask=0;
+           cmd_t.gCmd_dispTemperatureTask=0;
            ti=0;
 
 	   }

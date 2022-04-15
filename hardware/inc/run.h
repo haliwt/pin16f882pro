@@ -5,7 +5,7 @@
 typedef struct _CMDRUN_{
     uint8_t gCmd_PowerOn;
     uint8_t gCmd_KeyOrder;
-	uint8_t gCmd_dispTimerTask;
+	uint8_t gCmd_dispTemperatureTask;
 	uint8_t gCmd_beepTimer;
 	uint8_t gCmd_setTemp;
    
@@ -18,6 +18,9 @@ typedef struct _CMDRUN_{
 
 	//temperature 
 	uint8_t tempTotal;
+
+	//PTC 
+	uint8_t ptcTotal;
 
 
 	//timer

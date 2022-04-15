@@ -25,6 +25,9 @@ extern DHT11_info* dht11_t;
 
 void DHT11_Init(void);
 
+uint8_t DHT11ReadBuyte(void);
+
+
 
 void DHT11_DispSmg_Value(void);
 

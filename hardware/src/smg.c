@@ -249,7 +249,7 @@ void SmgDisplay_DynamicTemperatureNum(void)
 }
 
 
-void SmgDisplay_TimesNum(void)
+void SmgDisplay_DynamicTimeNum(void)
 
 {
 	 	TM1617_STB =0 ;  

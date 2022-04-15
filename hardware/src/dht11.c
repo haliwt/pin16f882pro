@@ -1,7 +1,7 @@
 #include "../inc/dht11.h"
 
 DHT11_info* dht11_t;
-static uint8_t DHT11ReadBuyte(void);
+
 
 void DHT11_Init(void)
 {
@@ -24,7 +24,7 @@ void DHT11_DispSmg_Value(void)
     dht11_t->DHT11_CAC = DHT11ReadBuyte();
 
 	//Smg display Digital -Temp
-	if(cmd_t.gCmd_dispTimerTask ==0){
+	if(cmd_t.gCmd_dispTemperatureTask ==0){
 		 Temp_RB1_LED  =1;      	 
          Hum_RB2_LED  =0; 
 	    SmgDisplay_Numbers(0x0A,dht11_t->Temperature_high,dht11_t ->Temperature_low);
@@ -39,7 +39,7 @@ void DHT11_DispSmg_Value(void)
 
 }
 
-static uint8_t DHT11ReadBuyte(void)
+uint8_t DHT11ReadBuyte(void)
 {
     uint8_t j=0;
     uint8_t i,datCode;

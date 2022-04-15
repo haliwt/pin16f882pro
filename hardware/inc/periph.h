@@ -14,8 +14,9 @@ void FAN_OnFun(void);
 void FAN_OffFun(void);
 
 
-void PTC_OnFun(void);
-void PTC_OffFun(void);
+void PTC_ControlFun(void);
+
+
 
 
 
