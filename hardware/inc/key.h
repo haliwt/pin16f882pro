@@ -72,6 +72,8 @@ typedef  struct  _state_
 key_types key;
 
 
+
+
 void KEY_Init(void);
 unsigned char  KEY_Scan(void);
 

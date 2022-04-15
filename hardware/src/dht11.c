@@ -25,10 +25,14 @@ void DHT11_ReadInfo_Value(void)
 
 	//Smg display Digital -Temp
 	if(cmd_t.gCmd_dispTimerTask ==0){
+		 Temp_RB1_LED  =1;      	 
+         Hum_RB2_LED  =0; 
 	    SmgDisplay_Numbers(0x0A,dht11_t->Temperature_high,dht11_t ->Temperature_low);
 	}
 	else{
      //Smg display Digital - humidity 
+      Temp_RB1_LED  =0;      	 
+      Hum_RB2_LED  =1; 
      SmgDisplay_Numbers(0X0A, dht11_t->Humidity_high ,dht11_t->Humidify_low);
 
 	}

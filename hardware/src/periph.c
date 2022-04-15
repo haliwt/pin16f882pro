@@ -1,1 +1,1 @@
-#include "../inc/periph.h"
+#include "../inc/periph.h"void Peripheral_Init(void){	TRISCbits.TRISC1 = 0; //as gpio output I/O	TRISCbits.TRISC5 = 0;	TRISCbits.TRISC4 = 0;	Beep_RC1_Out=0;	Fan_RC5_Out=0;	 PTC_RC4_Out=0;}void Beep_Fun(void){	if(cmd_t.gCmd_beepTimer ==0 ){		Beep_RC1_Out=1;	}	else{		Beep_RC1_Out=0;	}}void PTC_Fun(void){   if(cmd_t.gCmd_setTemp >30){      PTC_RA2_LED  =1;  	  PTC_RC4_Out=1;   }   else{      PTC_RA2_LED  =0;  	  PTC_RC4_Out=0;   }   }

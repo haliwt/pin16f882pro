@@ -154,6 +154,7 @@ static void TIMER1_CallBack_Fun(void)
 	
      static uint16_t i,ti;
 	 i++ ;
+	 
 	 if(i>999){ //1s
 
        i=0;

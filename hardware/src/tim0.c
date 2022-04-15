@@ -92,15 +92,30 @@ void TMR0_DefaultInterruptHandler(void){
     // add your TMR0 interrupt custom code
     // or set custom function using TMR0_SetInterruptHandler()
 }
-//timer0 is 10ms 
+/******************************************************************
+* 
+*Function Name: 
+*Function : timer0 is 10ms 
+*
+*
+******************************************************************/
 static void TIMER0_CallBack_Fun(void)
 {
    static uint16_t j;
+   static uint8_t jt;
    j++;
-   if(j >99){
+   if(j >0){
    	  j=0;
+	  jt++;
       cmd_t.gCmd_breathLed++;
-   
+	  if(jt==1){
+        cmd_t.gCmd_beepTimer =1 ;
+	  }
+	  else{
+	  	jt=0;
+		cmd_t.gCmd_beepTimer =0 ;
+
+	  }
    }
 
 

@@ -18,15 +18,19 @@ void  main(void)
       
     uint8_t keyValue;
 	LED_Init();
+	Peripheral_Init();
 	DHT11_Init();
+	
 	TMR0_Initialize();
 	TM1617_GPIO_Iint();
     
-    
+    TMR1_StartTimer();
+	cmd_t.gCmd_KeyOrder =0xFE;
     while(1)
     {
     	keyValue = KEY_Scan();
 		CheckRun_Mode(keyValue);
+		RunCommand();
 		
     
     }
