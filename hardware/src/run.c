@@ -6,7 +6,7 @@ CMDRUN_T cmd_t;
 void CheckRun_Mode(unsigned char keyvalue)
 {
     static uint8_t currKeyPower = 0xff,currKeyInc =0xff,currKeyDec= 0xff,
-	                    currKeyTimer= 0xff,currKeyLongTimer=0xff,ipowerOn=0;
+	                   currKeyTimer= 0xff,currKeyLongTimer=0xff,ipowerOn=0;
 
 	switch(keyvalue){
      
@@ -70,11 +70,19 @@ void CheckRun_Mode(unsigned char keyvalue)
 					currKeyInc = cmd_t.keyInc;
 					cmd_t.gCmd_KeyOrder=adjustIncreas ;
  					Beep_Fun();
-					if(cmd_t.setTimeStyle ==0){
+					if(cmd_t.setTimeStyle ==0){ //Temperature add value
 					  Temperature_AddValue();
 					  PTC_ControlFun();
+					  cmd_t.gCmd_timeToTime = (cmd_t.timerTotime * 60);
+						if(cmd_t.gCmd_timeToTime == 0){
+							cmd_t.timeStop =1;
+						}
+						else{
+							cmd_t.timeStop =0;
+							cmd_t.timerTotime=0;
+						}
 					}
-					else if(cmd_t.timeNormal ==0){
+					else if(cmd_t.timeNormal ==1){ // Timer to time add value 
 
 						Time_AddValue();
 					}
@@ -95,7 +103,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 						currKeyDec = cmd_t.keyDec;
 						cmd_t.gCmd_KeyOrder=adjustDecreas;
 				        Beep_Fun();
-						if(cmd_t.setTimeStyle ==0){
+						if(cmd_t.setTimeStyle ==0){//Temperature add value
 							
 					   		
 							Temperature_DecValue();
@@ -109,7 +117,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 								cmd_t.timerTotime=0;
 							}
 						}
-						else if(cmd_t.timeNormal ==0){
+						else if(cmd_t.timeNormal ==1){// Timer to time add value 
 						   
 						    Time_DecValue();
 							
@@ -126,7 +134,7 @@ void CheckRun_Mode(unsigned char keyvalue)
            if(cmd_t.gCmd_PowerOn ==powerOn){
 			   if(currKeyTimer != cmd_t.keyTimer){
 				   	  currKeyTimer = cmd_t.keyTimer ;
-					  cmd_t.timeNormal = 1;
+					  cmd_t.timeNormal = 0;
 					  cmd_t.setTimeStyle =0;
 					  cmd_t.gCmd_KeyOrder=dispTiimer;
 						Beep_Fun();
@@ -141,7 +149,7 @@ void CheckRun_Mode(unsigned char keyvalue)
              if(cmd_t.gCmd_PowerOn ==powerOn){
 			   if(currKeyLongTimer != cmd_t.keyTimer){
 				   	  currKeyLongTimer = cmd_t.keyLongTimer ;
-					  cmd_t.timeNormal = 0;
+					  cmd_t.timeNormal = 1;
 					  cmd_t.gCmd_KeyOrder=timerOn;
 			          cmd_t.setTimeStyle =1; //set timer modle 
 						Beep_Fun();

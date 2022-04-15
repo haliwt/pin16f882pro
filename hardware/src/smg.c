@@ -272,7 +272,7 @@ void SmgDisplay_DynamicTimeNum(void)
 	    TM1617_STB=1; 
 
 		
-	     if(cmd_t.timeTotal < 10 && cmd_t.timeNormal ==0){
+	     if(cmd_t.timeTotal < 10 ){
 	
 			 //decade
 			 TM1617_STB=0;	 
@@ -299,7 +299,7 @@ void SmgDisplay_DynamicTimeNum(void)
 			
 		 }
 	
-		 if(cmd_t.timeTotal < 20  && cmd_t.timeTotal > 9  && && cmd_t.timeNormal ==0){
+		 if(cmd_t.timeTotal < 20  && cmd_t.timeTotal > 9 ){
 	
 			 //decade
 			 TM1617_STB=0;	 
@@ -329,7 +329,7 @@ void SmgDisplay_DynamicTimeNum(void)
 		 }
 	
 		 
-		if(cmd_t.timeTotal > 19 && && cmd_t.timeNormal ==0){
+		if(cmd_t.timeTotal > 19){
 		
 			//decade
 			TM1617_STB=0;	
