@@ -16,7 +16,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 				if(cmd_t.gCmd_PowerOn == powerOff){
 	                  cmd_t.gCmd_KeyOrder=0;
 					  cmd_t.keyPoewr++;
-					
+					  cmd_t.setTimeStyle =0;
 
 				}
 				else{
@@ -70,7 +70,13 @@ void CheckRun_Mode(unsigned char keyvalue)
 					currKeyInc = cmd_t.keyInc;
 					cmd_t.gCmd_KeyOrder=adjustIncreas ;
  					Beep_Fun();
-					Temperature_AddValue();
+					if(cmd_t.setTimeStyle ==0){
+					  Temperature_AddValue();
+					}
+					else{
+
+						Time_AddValue();
+					}
 					
 				}
 
@@ -87,8 +93,18 @@ void CheckRun_Mode(unsigned char keyvalue)
 
 						currKeyDec = cmd_t.keyDec;
 						cmd_t.gCmd_KeyOrder=adjustDecreas;
-				   		Beep_Fun();
-						Temperature_DecValue();
+				        Beep_Fun();
+						if(cmd_t.setTimeStyle ==0){
+							
+					   		
+							Temperature_DecValue();
+						}
+						else{
+						   
+						    Time_DecValue();
+							
+
+						}
 				   }
 
 				}
@@ -100,6 +116,7 @@ void CheckRun_Mode(unsigned char keyvalue)
            if(cmd_t.gCmd_PowerOn ==powerOn){
 			   if(currKeyTimer != cmd_t.keyTimer){
 				   	  currKeyTimer = cmd_t.keyTimer ;
+					  cmd_t.setTimeStyle =0;
 					  cmd_t.gCmd_KeyOrder=dispTiimer;
 						Beep_Fun();
 
@@ -113,7 +130,8 @@ void CheckRun_Mode(unsigned char keyvalue)
              if(cmd_t.gCmd_PowerOn ==powerOn){
 			   if(currKeyLongTimer != cmd_t.keyTimer){
 				   	  currKeyLongTimer = cmd_t.keyLongTimer ;
-					cmd_t.gCmd_KeyOrder=timerOn;
+					  cmd_t.gCmd_KeyOrder=timerOn;
+			          cmd_t.setTimeStyle =1; //set timer modle 
 						Beep_Fun();
 
 			   }
@@ -146,25 +164,39 @@ void RunCommand(void)
         break;
 
 		case adjustIncreas : //"+"
-		    cmd_t.compareA = 2;
-			cmd_t.compareB =0;
-			SmgDisplay_DynamicNum(CompareFun);
+		  
+		    if(cmd_t.setTimeStyle ==0){
+			   SmgDisplay_DynamicTemperatureNum();
+
+		    }
+			else{
+				SmgDisplay_TimesNum();
+
+			}
 			cmd_t.keyDec++ ;
 			cmd_t.keyLongTimer++;
 			cmd_t.keyTimer++;
 			cmd_t.keyInc++;
+		
 
 		break;
 
 		case adjustDecreas: //"-"
-			cmd_t.compareA = 0;
-			cmd_t.compareB =2;
-		       SmgDisplay_DynamicNum(CompareFun);
+			
+		   if(cmd_t.setTimeStyle ==0){
+
+				SmgDisplay_DynamicTemperatureNum();
+		   }
+		   else{
+				SmgDisplay_TimesNum();
+
+		   }
 		
 				cmd_t.keyLongTimer++;
 				cmd_t.keyTimer++;
 				cmd_t.keyInc++;
 			    cmd_t.keyDec++ ;
+			
 
 		break;
 
@@ -172,14 +204,16 @@ void RunCommand(void)
 			cmd_t.keyDec++ ;
 			 cmd_t.keyLongTimer++;
 			  cmd_t.keyInc++;
+			
 			  
 
 
 		break;
 		case timerOn: //long time be pressed
+		   
 			cmd_t.keyDec++ ;
 			cmd_t.keyTimer++;
-			 cmd_t.keyInc++;
+			cmd_t.keyInc++;
 		break;
 
 		default:

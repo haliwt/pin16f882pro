@@ -79,9 +79,9 @@ void Temperature_AddValue(void)
 {
    static uint8_t i ;
    i++;
-   cmd_t.tempAdd = 20 + i;
-   if(cmd_t.tempAdd  >40){
-      cmd_t.tempAdd=40;
+   cmd_t.tempTotal= 20 + i;
+   if(cmd_t.tempTotal  >40){
+      cmd_t.tempTotal=40;
       i=0;
    }
    
@@ -89,13 +89,36 @@ void Temperature_AddValue(void)
 }
 void Temperature_DecValue(void)
 {
-	cmd_t.tempDec--;
-	if(cmd_t.tempDec < 20 ){
-        cmd_t.tempDec=20;
+	cmd_t.tempTotal--;
+	if(cmd_t.tempTotal< 20 ){
+        cmd_t.tempTotal=20;
 
 	}
 
 
 }
+
+void Time_AddValue(void)
+{
+    cmd_t.timeTotal ++ ;
+	
+	if(cmd_t.timeTotal > 24){ //hours 
+		cmd_t.timeTotal =0;
+
+	}
+
+}
+void Time_DecValue(void)
+{
+     cmd_t.timeTotal --;
+	if(cmd_t.timeTotal < 0){
+
+	   cmd_t.timeTotal= 24;
+
+	}
+
+
+}
+
 
 

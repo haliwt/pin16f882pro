@@ -8,7 +8,8 @@ typedef struct _CMDRUN_{
 	uint8_t gCmd_dispTimerTask;
 	uint8_t gCmd_beepTimer;
 	uint8_t gCmd_setTemp;
-
+   
+   //key
 	uint8_t keyPoewr;
 	uint8_t keyInc;
 	uint8_t keyDec;
@@ -16,10 +17,12 @@ typedef struct _CMDRUN_{
 	uint8_t keyLongTimer;
 
 	//temperature 
-	uint8_t tempAdd;
-	uint8_t tempDec;
-	uint8_t compareA;
-	uint8_t compareB;
+	uint8_t tempTotal;
+
+
+	//timer
+	uint8_t setTimeStyle;
+    int8_t  timeTotal;
 
 	uint16_t gCmd_breathLed;
 

@@ -31,5 +31,8 @@ void DHT11_DispSmg_Value(void);
 void Temperature_AddValue(void);
 void Temperature_DecValue(void);
 
+void Time_AddValue(void);
+void Time_DecValue(void);
+
 
 #endif 

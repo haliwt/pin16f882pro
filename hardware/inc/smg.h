@@ -47,11 +47,12 @@ void SmgDisplay_Numbers(uint8_t disdat3,uint8_t disdat2,uint8_t disdat1);
 void SmgDisplay_Char(void);
 
 
+void SmgDisplay_DynamicTemperatureNum(void);
+
+void SmgDisplay_TimesNum(void);
 
 
-void SmgDisplay_DynamicNum(uint8_t(*compare)(void));
 
-uint8_t CompareFun(void);
 
 
 

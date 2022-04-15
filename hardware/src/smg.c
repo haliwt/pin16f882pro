@@ -137,7 +137,7 @@ void SmgDisplay_Char(void)
 }
 
 
-void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
+void SmgDisplay_DynamicTemperatureNum(void)
 {
 
 	    TM1617_STB =0 ;  
@@ -148,8 +148,8 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 		Tm1617_SendData(AddrFixed);//AddrFixed 写固定地址
 		//写显示，固定定制模式
 		TM1617_STB=1; 
-		
-        TM1617_STB=0;   
+
+	    TM1617_STB=0;   
 		Tm1617_SendData(Addr00H);
 		//指向地址00H  
 	    Tm1617_SendData(segNumber_high[0x0A]); //主显示3 位---百位
@@ -157,8 +157,8 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 	    Tm1617_SendData(Addr01H);
 		Tm1617_SendData(segNumber_low[0x0A]); //主显示3 位---百位
 	    TM1617_STB=1; 
-
-		if(cmd_t.tempAdd < 29){
+		
+	     if(cmd_t.tempTotal < 30){
 
 			//decade
 			TM1617_STB=0;   
@@ -176,24 +176,17 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 	        TM1617_STB=0;   
 			Tm1617_SendData(Addr0CH);
 			//指向地址0CH  
-			if(compare()){
-				Tm1617_SendData(segNumber_high[cmd_t.tempAdd]); //主显示1位---个位
-				//display address 0DH
-				Tm1617_SendData(Addr0DH);
-				Tm1617_SendData(segNumber_low[cmd_t.tempAdd]); //主显示1位---个位
-				TM1617_STB=1; 
-			}
-			else{
-				Tm1617_SendData(segNumber_high[cmd_t.tempDec]); //主显示1位---个位
-				//display address 0DH
-				Tm1617_SendData(Addr0DH);
-				Tm1617_SendData(segNumber_low[cmd_t.tempDec]); //主显示1位---个位
-				TM1617_STB=1; 
-
-			}
+		
+			Tm1617_SendData(segNumber_high[cmd_t.tempTotal]); //主显示1位---个位
+			//display address 0DH
+			Tm1617_SendData(Addr0DH);
+			Tm1617_SendData(segNumber_low[cmd_t.tempTotal]); //主显示1位---个位
+			TM1617_STB=1; 
+			
+			
 		}
 
-		if(cmd_t.tempAdd < 39 && cmd_t.tempAdd > 29){
+		if(cmd_t.tempTotal < 40 && cmd_t.tempTotal > 29){
 
 			//decade
 			TM1617_STB=0;   
@@ -210,29 +203,21 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 		    //unit bit 
 	        TM1617_STB=0;   
 			Tm1617_SendData(Addr0CH);
-			if(compare()){
-				//指向地址0CH  
-				Tm1617_SendData(segNumber_high[cmd_t.tempAdd]); //主显示1位---个位
-				//display address 0DH
-				Tm1617_SendData(Addr0DH);
-				Tm1617_SendData(segNumber_low[cmd_t.tempAdd]); //主显示1位---个位
-				TM1617_STB=1;
-			} 
-			else{
-               //指向地址0CH 
-				Tm1617_SendData(segNumber_high[cmd_t.tempDec]); //主显示1位---个位
-				//display address 0DH
-				Tm1617_SendData(Addr0DH);
-				Tm1617_SendData(segNumber_low[cmd_t.tempDec]); //主显示1位---个位
-				TM1617_STB=1;
-
-            }
+			
+			//指向地址0CH  
+			Tm1617_SendData(segNumber_high[cmd_t.tempTotal]); //主显示1位---个位
+			//display address 0DH
+			Tm1617_SendData(Addr0DH);
+			Tm1617_SendData(segNumber_low[cmd_t.tempTotal]); //主显示1位---个位
+			TM1617_STB=1;
+		 
+			
 		
 		
 		}
 
 		
-	   if(cmd_t.tempAdd > 39){
+	   if(cmd_t.tempTotal > 39){
 	   
 		   //decade
 		   TM1617_STB=0;   
@@ -250,10 +235,10 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 		   TM1617_STB=0;   
 		   Tm1617_SendData(Addr0CH);
 		   //指向地址0CH  
-		   Tm1617_SendData(segNumber_high[cmd_t.tempAdd]); //主显示1位---个位
+		   Tm1617_SendData(segNumber_high[cmd_t.tempTotal]); //主显示1位---个位
 		   //display address 0DH
 		   Tm1617_SendData(Addr0DH);
-		   Tm1617_SendData(segNumber_low[cmd_t.tempAdd]); //主显示1位---个位
+		   Tm1617_SendData(segNumber_low[cmd_t.tempTotal]); //主显示1位---个位
 			TM1617_STB=1; 
 	   }
 		
@@ -263,14 +248,120 @@ void SmgDisplay_DynamicNum(uint8_t (*compare)(void))
 
 }
 
-uint8_t CompareFun(void)
+
+void SmgDisplay_TimesNum(void)
+
 {
-   
-   if(cmd_t.compareA > cmd_t.compareB ) return 1;
-   else
-    return 0;
+	 	TM1617_STB =0 ;  
+        Tm1617_SendData(ModeDispTM1617); //写数据到显示寄存器
+	    TM1617_STB =1; 
+	
+        TM1617_STB=0;   
+		Tm1617_SendData(AddrFixed);//AddrFixed 写固定地址
+		//写显示，固定定制模式
+		TM1617_STB=1; 
+		
+		//DIG3 
+		TM1617_STB=0;   
+		Tm1617_SendData(Addr00H);
+		//指向地址00H  
+	    Tm1617_SendData(CHAR_H_HI); //主显示3 位---百位
+	    //display address is 01H
+	    Tm1617_SendData(Addr01H);
+		Tm1617_SendData(CHAR_H_LO); //主显示3 位---百位
+	    TM1617_STB=1; 
+
+		
+	     if(cmd_t.timeTotal < 10){
+	
+			 //decade
+			 TM1617_STB=0;	 
+			 Tm1617_SendData(Addr02H);
+			 //指向地址2   
+			 Tm1617_SendData(segNumber_high[0]); //主显示2位---十位
+	
+			 //display address is 03H
+			 Tm1617_SendData(Addr03H);
+			 Tm1617_SendData(segNumber_low[0]); //主显示2 位---十位
+			 TM1617_STB=1; 
+	
+	
+			 //unit bit 
+			 TM1617_STB=0;	 
+			 Tm1617_SendData(Addr0CH);
+			 //指向地址0CH	
+			 Tm1617_SendData(segNumber_high[cmd_t.timeTotal]); //主显示1位---个位
+				 //display address 0DH
+			 Tm1617_SendData(Addr0DH);
+			  Tm1617_SendData(segNumber_low[cmd_t.timeTotal]); //主显示1位---个位
+				TM1617_STB=1; 
+			 
+			
+		 }
+	
+		 if(cmd_t.timeTotal < 20  && cmd_t.timeTotal > 9){
+	
+			 //decade
+			 TM1617_STB=0;	 
+			 Tm1617_SendData(Addr02H);
+			 //指向地址2   
+			 Tm1617_SendData(segNumber_high[1]); //主显示2位---十位
+	
+			 //display address is 03H
+			 Tm1617_SendData(Addr03H);
+			 Tm1617_SendData(segNumber_low[1]); //主显示2 位---十位
+			 TM1617_STB=1; 
+	
+	
+			 //unit bit 
+			 TM1617_STB=0;	 
+			 Tm1617_SendData(Addr0CH);
+			
+				 //指向地址0CH	
+				 Tm1617_SendData(segNumber_high[cmd_t.timeTotal]); //主显示1位---个位
+				 //display address 0DH
+				 Tm1617_SendData(Addr0DH);
+				 Tm1617_SendData(segNumber_low[cmd_t.timeTotal]); //主显示1位---个位
+				 TM1617_STB=1;
+		
+		 
+		 
+		 }
+	
+		 
+		if(cmd_t.timeTotal > 19){
+		
+			//decade
+			TM1617_STB=0;	
+			Tm1617_SendData(Addr02H);
+			//指向地址2   
+			Tm1617_SendData(segNumber_high[2]); //主显示2位---十位
+	
+			//display address is 03H
+			Tm1617_SendData(Addr03H);
+			Tm1617_SendData(segNumber_low[2]); //主显示2 位---十位
+			TM1617_STB=1; 
+	
+	
+			//unit bit 
+			TM1617_STB=0;	
+			Tm1617_SendData(Addr0CH);
+			//指向地址0CH  
+			Tm1617_SendData(segNumber_high[cmd_t.timeTotal]); //主显示1位---个位
+			//display address 0DH
+			Tm1617_SendData(Addr0DH);
+			Tm1617_SendData(segNumber_low[cmd_t.timeTotal]); //主显示1位---个位
+			 TM1617_STB=1; 
+		}
+		 
+	   TM1617_STB =0; 
+		Tm1617_SendData(OpenDispTM1617|Set14_16TM1617); //开显示，显示，设置脉冲宽带 14/16
+		TM1617_STB =1;	  
+
 
 }
+
+
 
 
 
