@@ -152,19 +152,29 @@ void TMR1_DefaultInterruptHandler(void){
 static void TIMER1_CallBack_Fun(void)
 {
 	
-     static uint16_t i,ti;
+     static uint16_t i,z;
+	 static uint8_t ti;
 	 i++ ;
 	 
 	 if(i>999){ //1s
 
        i=0;
 	   ti++;
+	   
+	  cmd_t.timerTotime ++;
 	   if(ti==1){
            cmd_t.gCmd_dispTemperatureTask=1;
 	   }
 	   else{
            cmd_t.gCmd_dispTemperatureTask=0;
            ti=0;
+
+	   }
+	   if(cmd_t.timerTotime> 59){ //60s -> 1 minitue
+			cmd_t.timerTotime=0;
+		   if(cmd_t.timeStop==1){ //timer to time start 
+		        cmd_t.gCmd_timeToTime--;
+		   	}
 
 	   }
 

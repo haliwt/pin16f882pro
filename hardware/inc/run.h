@@ -8,6 +8,9 @@ typedef struct _CMDRUN_{
 	uint8_t gCmd_dispTemperatureTask;
 	uint8_t gCmd_beepTimer;
 	uint8_t gCmd_setTemp;
+
+	//breath LED
+	uint8_t gCmd_breathLed;
    
    //key
 	uint8_t keyPoewr;
@@ -23,12 +26,13 @@ typedef struct _CMDRUN_{
 	uint8_t ptcTotal;
 
 
-	//timer
+	//timer to time
 	uint8_t setTimeStyle;
+	uint8_t timerTotime;
+	uint8_t timeStop;
     int8_t  timeTotal;
 
-	uint16_t gCmd_breathLed;
-
+	uint16_t gCmd_timeToTime;
 
 }CMDRUN_T;
 
@@ -49,7 +53,7 @@ enum runcmd{
 void CheckRun_Mode(unsigned char keyvalue);
 void RunCommand(void);
 
-
+void Check_TimeTotime_Fun(void);
 
 
 
