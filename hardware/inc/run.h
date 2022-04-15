@@ -30,7 +30,9 @@ typedef struct _CMDRUN_{
 	uint8_t setTimeStyle;
 	uint8_t timerTotime;
 	uint8_t timeStop;
+	uint8_t timeNormal;
     int8_t  timeTotal;
+
 
 	uint16_t gCmd_timeToTime;
 

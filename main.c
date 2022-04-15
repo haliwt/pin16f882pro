@@ -31,7 +31,7 @@ void  main(void)
     	keyValue = KEY_Scan();
 		CheckRun_Mode(keyValue);
 		RunCommand();
-		Check_TimeTotime_Fun();
+		Check_TimeTotime_Fun(); //
 		
     
     }
