@@ -5,6 +5,100 @@
 void PWM2_Initialize(void);
 
 
+
+void TMR2_LoadPeriodRegister(uint8_t periodVal);
+
+/**
+  @Summary
+    Timer Interrupt Service Routine
+
+  @Description
+    Timer Interrupt Service Routine is called by the Interrupt Manager.
+
+  @Preconditions
+    Initialize  the TMR2 module with interrupt before calling this isr.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+void TMR2_ISR(void);
+
+/**
+  @Summary
+    CallBack function
+
+  @Description
+    This function is called from the timer ISR. User can write your code in this function.
+
+  @Preconditions
+    Initialize  the TMR2 module with interrupt before calling this function.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+ void TMR2_CallBack(void);
+/**
+  @Summary
+    Set Timer Interrupt Handler
+
+  @Description
+    This sets the function to be called during the ISR
+
+  @Preconditions
+    Initialize  the TMR2 module with interrupt before calling this.
+
+  @Param
+    Address of function to be set
+
+  @Returns
+    None
+*/
+ void TMR2_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Timer Interrupt Handler
+
+  @Description
+    This is a function pointer to the function that will be called during the ISR
+
+  @Preconditions
+    Initialize  the TMR2 module with interrupt before calling this isr.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+extern void (*TMR2_InterruptHandler)(void);
+
+/**
+  @Summary
+    Default Timer Interrupt Handler
+
+  @Description
+    This is the default Interrupt Handler function
+
+  @Preconditions
+    Initialize  the TMR2 module with interrupt before calling this isr.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+void TMR2_DefaultInterruptHandler(void);
+
+
+
 void PWM2_LoadDutyValue(uint16_t dutyValue);
 
 /**
@@ -37,6 +131,7 @@ void PWM2_LoadDutyValue(uint16_t dutyValue);
     }
     </code>
 */
+
 
 void TMR2_Start(void);
 

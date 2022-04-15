@@ -10,14 +10,17 @@ void __interrupt() INTERRUPT_InterruptManager (void)
      } 
 	else if(INTCONbits.PEIE == 1)
     {
+        
         if(INTCONbits.TMR0IE == 1 && INTCONbits.TMR0IF == 1)
 	    {
 	        TMR0_ISR();
 	    }
-        else
+        else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
         {
-            //Unhandled Interrupt
+            TMR2_ISR();
         }
+       
+
     }      
     else
     {

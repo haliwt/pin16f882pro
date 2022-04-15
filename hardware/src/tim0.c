@@ -9,8 +9,8 @@ static void TIMER0_CallBack_Fun(void);
  * Freq = system osc frequency 8MHz
  *__XTAL-FREQ = 8000000 
  * prescale = 128 
- * TMR0 = [256-(__XTAL-FREQ/4)/prescaler * Timer0 overflow(s) -1]=256-[(800000/4)/128] * 0.01 -1=256-156.25-1=99=0x63
- * TMR0 = 256 - (Tim * freq /(4 * prescale)) -1 =256 - (1000 * 8)/(4*128)==256-156.25-1 =100 -1 =99 = 0x63
+ * TMR0 = [256-(__XTAL-FREQ/4)/prescaler * Timer0 overflow(s)]=256-[(800000/4)/128] * 0.01 -1=256-156.25=100=0x64
+ * TMR0 = 256 - (Tim(us) * freq /(4 * prescale))  =256 - (1000us * 8)/(4*128)==256-156.25=100  =100 = 0x64
  * 
 */
 
@@ -21,8 +21,8 @@ void TMR0_Initialize(void)
     // PSA assigned; PS 1:128; TMRSE Increment_hi_lo; mask the nWPUEN and INTEDG bits
     OPTION_REG = 0b00000110; 
 	
-    // TMR0 99; 
-    TMR0 = 0x63;
+    // TMR0 100; 
+    TMR0 = 0x64;
 	
     // Load the TMR value to reload variable
     timer0ReloadVal= 99;

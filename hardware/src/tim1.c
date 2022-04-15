@@ -21,9 +21,9 @@ static void TIMER1_CallBack_Fun(void);
 *           Freq = system clock frequency is = 8MHz 
 *           prescaler = 1,2,4,8,
 			prscale=1
-*           TMR1H:TMR1L = 65536-[(Tim*Freq)/(4*precals)] -1=65536-((1000 * 8)/(4*1))=63536-2000=63536 =0xF830
+*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 8)/(4*1))=63536-2000=63536 =0xF830
             prscaler = 8 
-*           TMR1H:TMR1L = 65536-[(Tim*Freq)/(4*precals)] -1=65536-((1000 * 8)/(4*8))=65536-250 =65286 =0xff06
+*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 8)/(4*8))=65536-250 =65286 =0xff06
 *
 *           prescaler = 8:
 *           TMR1H:TMR1L =65536 -(Times)/(4x1/freq * prescaler) = 65536- 1000us/(4*0.125 * 8) =65536-250 =65286
