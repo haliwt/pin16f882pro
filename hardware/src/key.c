@@ -19,18 +19,17 @@ uint8_t KEY_Scan(void)
 		
         key.read &= ~0x01; // 0x1f & 0xfe =  0x1E = 0b 1110
 	}
-
-    if( KEY_TIMER_RC0_GetValue()   ==0){ //long times be pressed 0x82
+	else if( KEY_TIMER_RC0_GetValue()   ==0){ //long times be pressed 0x82
 
         key.read &= ~0x02; // 0x1f & 0xfd =  0x1d -0b 1101
 
 	}
-	if( KEY_INC_RA6_GetValue()   ==0){
+	else if( KEY_INC_RA6_GetValue()   ==0){
 
         key.read &= ~0x04; // 0x1f & 0xfB =  0x1b -0b 1011
 
 	}
-	if( KEY_DEC_RA7_GetValue()   ==0){
+	else if( KEY_DEC_RA7_GetValue()   ==0){
 
         key.read &= ~0x08; // 0x1f & 0xf7 =  0x17 -0b 0111
 
@@ -48,9 +47,8 @@ uint8_t KEY_Scan(void)
 				key.state    = first;
 				key.on_time  = 0;
 				key.off_time = 0;
-             //   POWER_LED_ON();
-                
-			}
+            
+            }
 			break;
 		}
 		case first:
@@ -64,8 +62,7 @@ uint8_t KEY_Scan(void)
                    
 					key.state   = second;
                    
-                    
-				}
+                }
 			}
 			else
 			{
@@ -83,7 +80,7 @@ uint8_t KEY_Scan(void)
 					key.value = key.value|0x80; //key.value = 0x01 | 0x80  =0x81  
 					key.on_time = 0;
 					key.state   = finish;
-                    // POWER_LED_OFF();
+               
                    
 				}
 			}
@@ -130,6 +127,7 @@ uint8_t KEY_Scan(void)
 
 
 }
+
 
 
 

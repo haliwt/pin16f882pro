@@ -20,7 +20,7 @@ void  main(void)
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
-	
+	EPWM_Initialize();
 	TMR0_Initialize();
 	TM1617_GPIO_Iint();
     

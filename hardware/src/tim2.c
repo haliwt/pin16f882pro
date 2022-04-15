@@ -12,7 +12,7 @@
 *
 *****************************************************************************************/
 
-void TMR2_Initialize(void)YES
+void TMR2_Initialize(void)
 {
     // Set TMR2 to the options selected in the User Interface
 
@@ -26,16 +26,11 @@ void TMR2_Initialize(void)YES
 
     
    // T2CKPS 1:4; T2OUTPS 1:1; TMR2ON on; 
-    T2CON = 0B0000 0101;//0x80;
+    T2CON = 0B00000101;//0x80;
 }
 
 
 
-void TMR2_ExtResetSourceSet(TMR2_HLT_EXT_RESET_SOURCE reset)
-{
-    //Configure different types of HLT external reset source
-    T2RSTbits.RSEL = reset;
-}
 
 void TMR2_Start(void)
 {
@@ -94,14 +89,3 @@ void TMR2_LoadPeriodRegister(uint8_t periodVal)
    TMR2_Period8BitSet(periodVal);
 }
 
-bool TMR2_HasOverflowOccured(void)
-{
-    // check if  overflow has occurred by checking the TMRIF bit
-    bool status = PIR4bits.TMR2IF;
-    if(status)
-    {
-        // Clearing IF flag.
-        PIR4bits.TMR2IF = 0;
-    }
-    return status;
-}

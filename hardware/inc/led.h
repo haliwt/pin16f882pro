@@ -14,8 +14,9 @@
 void LED_Init(void);
 void Breath_Led(void);
 
-void PowerOn_LED_Fun(void);
+void PowerOn_LED_On(void);
 
+void PowerOn_LED_Off(void);
 
 
 

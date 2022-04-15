@@ -25,6 +25,7 @@
 #include "hardware/inc/smg.h"
 #include "hardware/inc/interrupt_manager.h"
 #include "hardware/inc/tm1617.h"
+#include "hardware/inc/tim2.h"
 
 
 #ifdef	__cplusplus

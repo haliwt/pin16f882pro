@@ -26,7 +26,10 @@ extern DHT11_info* dht11_t;
 void DHT11_Init(void);
 
 
-void DHT11_ReadInfo_Value(void);
+void DHT11_DispSmg_Value(void);
+
+void Temperature_AddValue(void);
+void Temperature_DecValue(void);
 
 
 #endif 

@@ -10,7 +10,12 @@ void Peripheral_Init(void);
 
 void Beep_Fun(void);
 
-void PTC_Fun(void);
+void FAN_OnFun(void);
+void FAN_OffFun(void);
+
+
+void PTC_OnFun(void);
+void PTC_OffFun(void);
 
 
 

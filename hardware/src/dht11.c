@@ -12,7 +12,7 @@ void DHT11_Init(void)
 
 
 
-void DHT11_ReadInfo_Value(void)
+void DHT11_DispSmg_Value(void)
 {
 
     dht11_t->Humidity_high  = DHT11ReadBuyte();
@@ -74,3 +74,28 @@ static uint8_t DHT11ReadBuyte(void)
 
 
 }
+
+void Temperature_AddValue(void)
+{
+   static uint8_t i ;
+   i++;
+   cmd_t.tempAdd = 20 + i;
+   if(cmd_t.tempAdd  >40){
+      cmd_t.tempAdd=40;
+      i=0;
+   }
+   
+
+}
+void Temperature_DecValue(void)
+{
+	cmd_t.tempDec--;
+	if(cmd_t.tempDec < 20 ){
+        cmd_t.tempDec=20;
+
+	}
+
+
+}
+
+

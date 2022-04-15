@@ -49,6 +49,10 @@ void SmgDisplay_Char(void);
 
 
 
+void SmgDisplay_DynamicNum(uint8_t(*compare)(void));
+
+uint8_t CompareFun(void);
+
 
 
 

@@ -56,7 +56,7 @@ void Breath_Led(void)
 }
 
 
-void PowerOn_LED_Fun(void)
+void PowerOn_LED_On(void)
 {
 	Breath_RA0_LED  =1; 	   	
     powerOn_RA1_LED  =1;    	
@@ -68,6 +68,17 @@ void PowerOn_LED_Fun(void)
 
 
 }
+void PowerOn_LED_Off(void )
+{
+	Breath_RA0_LED   =0; 	   	
+    powerOn_RA1_LED  =0;    	
+  //  PTC_RA2_LED         	
+   // Temp_RB1_LED  =1;      	 
+   // Hum_RB2_LED         
+   Smart_RA3_LED  =0;     
+
+}
+
 
 
 static void Delay(uint16_t t)

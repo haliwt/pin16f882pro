@@ -4,31 +4,7 @@
 
 void PWM2_Initialize(void);
 
-/**
-  @Summary
-    Loads 16-bit duty cycle.
 
-  @Description
-    This routine loads the 16 bit duty cycle value.
-
-  @Preconditions
-    PWM2_Initialize() function should have been called
-    before calling this function.
-
-  @Param
-    Pass 16bit duty cycle value.
-
-  @Returns
-    None
-
-  @Example
-    <code>
-    uint16_t dutycycle;
-
-    PWM2_Initialize();
-    PWM2_LoadDutyValue(dutycycle);
-    </code>
-*/
 void PWM2_LoadDutyValue(uint16_t dutyValue);
 
 /**
@@ -61,10 +37,10 @@ void PWM2_LoadDutyValue(uint16_t dutyValue);
     }
     </code>
 */
-bool PWM2_OutputStatusGet(void);
 
+void TMR2_Start(void);
 
-
+void TMR2_StopTimer(void);
 
 
 
