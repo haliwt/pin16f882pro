@@ -24,8 +24,6 @@ void TMR2_Initialize(void)
    // TMR2 236; 
     TMR2 =0xEC;
 
-    // T2RSEL T2CKIPPS pin; 
-
     // PR2 19; 
      PR2 = 0x13;
     PIR1bits.TMR2IF = 0;

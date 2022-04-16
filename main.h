@@ -26,6 +26,7 @@
 #include "hardware/inc/interrupt_manager.h"
 #include "hardware/inc/tm1617.h"
 #include "hardware/inc/tim2.h"
+#include "hardware/inc/eeprom.h"
 
 
 #ifdef	__cplusplus

@@ -3,11 +3,13 @@
 /*******************************************************************************************
 *
 *Function Name:void EPWM_Initialize(void)
-*Function: setup duty cycle ratio = [CCPRxL:CCPxCON<5:4>]/(4*(PR2+1))
+*Function: 
+*          PWM Period = [(PR2)+1]*4*Tosc*(TMR2 Prescale Value)=
+*          Duty cycle ratio = [CCPRxL:CCPxCON<5:4>]/(4*(PR2+1))
 *          PR2 =19,Tperiod =0.04ms
 *          100% Duty = 80/(4*(19+1) =1 -> CCRxL:CCPxCON<5:4> = 80
-*          50%  Duty = 40/80 =0.5      -> CCRxL:CCPxCON<5:4> = 40 = 0x28
-*
+*          50%  Duty = 80 *50%  =40      -> CCRxL:CCPxCON<5:4> = 40 = 0x28
+*		   25%  Duty = 80 *25% = 20
 *
 *
 *******************************************************************************************/
