@@ -160,7 +160,7 @@ static void TIMER1_CallBack_Fun(void)
 
        i=0;
 	   ti++;
-	   
+	  cmd_t.blankSmg ++ ;
 	  cmd_t.timerTotime ++;
 	   if(ti==1){
            cmd_t.gCmd_dispTemperatureTask=1;

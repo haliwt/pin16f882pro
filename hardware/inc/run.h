@@ -33,6 +33,10 @@ typedef struct _CMDRUN_{
 	uint8_t timeNormal;
     int8_t  timeTotal;
 
+	//smg
+	 uint8_t blankSmg ;
+	 uint8_t blankNum;
+
 
 	uint16_t gCmd_timeToTime;
 
@@ -47,7 +51,8 @@ enum runcmd{
 	adjustIncreas = 0x02,
 	adjustDecreas = 0x03,
 	dispTiimer  = 0x04,
-	timerOn = 0X05,
+	dispTemperature = 0x5,
+	timerOn = 0X06
 
 
 };

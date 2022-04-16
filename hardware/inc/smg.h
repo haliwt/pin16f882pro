@@ -52,7 +52,7 @@ void SmgDisplay_DynamicTemperatureNum(void);
 void SmgDisplay_DynamicTimeNum(void);
 
 
-
+void SmgDisplay_Off(void);
 
 
 

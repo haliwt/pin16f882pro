@@ -361,5 +361,12 @@ void SmgDisplay_DynamicTimeNum(void)
 
 }
 
+void SmgDisplay_Off(void)
+{
+
+
+
+
+}
 
 
