@@ -14,14 +14,14 @@ typedef struct _DHT11_{
 
     unsigned char Humidity_high;
     unsigned char Humidify_low;
-    unsigned char Temperature_high;
+    uint8_t  Temperature_high;
     unsigned char Temperature_low;
     unsigned char DHT11_CAC;
 
 
 }DHT11_info;
 
-extern DHT11_info* dht11_t;
+DHT11_info  dht11_t;
 
 void DHT11_Init(void);
 

@@ -13,8 +13,9 @@ void Beep_Fun(void);
 void FAN_OnFun(void);
 void FAN_OffFun(void);
 
+void PTC_PowerOn_SetFun(void);
 
-void PTC_ControlFun(void);
+void PTC_SetTemperature_Fun(void);
 
 
 

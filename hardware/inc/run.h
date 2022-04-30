@@ -3,7 +3,7 @@
 #include "../../main.h"
 
 typedef struct _CMDRUN_{
-    uint8_t gCmd_PowerOn;
+     uint8_t gCmd_PowerOn;
     uint8_t gCmd_KeyOrder;
 	uint8_t gCmd_dispTemperatureTask;
 	uint8_t gCmd_beepTimer;
@@ -18,6 +18,8 @@ typedef struct _CMDRUN_{
 	uint8_t keyDec;
 	uint8_t keyTimer;
 	uint8_t keyLongTimer;
+	uint8_t keyShutOff;
+	uint8_t keyOn;
 
 	//temperature 
 	uint8_t tempTotal;
@@ -28,13 +30,12 @@ typedef struct _CMDRUN_{
 
 	//timer to time
 	uint8_t setTimeStyle;
-	uint8_t timerTotime;
-	uint8_t timeStop;
+	uint8_t timeStart;
+	uint8_t timer;
 	uint8_t timeNormal;
     int8_t  timeTotal;
 
 	//smg
-	 uint8_t blankSmg ;
 	 uint8_t blankNum;
 
 
@@ -42,14 +43,15 @@ typedef struct _CMDRUN_{
 
 }CMDRUN_T;
 
-extern CMDRUN_T cmd_t;
+//extern CMDRUN_T cmd_t;
+CMDRUN_T cmd_t;
 
 enum runcmd{
 
     powerOff = 0x0,
 	powerOn  = 0x01,
-	adjustIncreas = 0x02,
-	adjustDecreas = 0x03,
+	adjustIncrease = 0x02,
+	adjustDecrease = 0x03,
 	dispTiimer  = 0x04,
 	dispTemperature = 0x5,
 	timerOn = 0X06

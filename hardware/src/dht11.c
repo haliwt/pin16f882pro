@@ -1,6 +1,6 @@
 #include "../inc/dht11.h"
 
-DHT11_info* dht11_t;
+
 
 
 void DHT11_Init(void)
@@ -10,34 +10,34 @@ void DHT11_Init(void)
 
 }
 
-
-
 void DHT11_DispSmg_Value(void)
 {
 
-    dht11_t->Humidity_high  = DHT11ReadBuyte();
-    dht11_t->Humidify_low   = DHT11ReadBuyte();
+//    dht11_t.Humidity_high  = DHT11ReadBuyte();
+//    dht11_t.Humidify_low   = DHT11ReadBuyte();
+//
+//    dht11_t.Temperature_high = DHT11ReadBuyte();
+//    dht11_t.Temperature_low   =  DHT11ReadBuyte();
 
-    dht11_t->Temperature_high = DHT11ReadBuyte();
-    dht11_t ->Temperature_low   =  DHT11ReadBuyte();
-
-    dht11_t->DHT11_CAC = DHT11ReadBuyte();
+   // dht11_t.DHT11_CAC = DHT11ReadBuyte();
 
 	//Smg display Digital -Temp
 	if(cmd_t.gCmd_dispTemperatureTask ==0){
 		 Temp_RB1_LED  =1;      	 
          Hum_RB2_LED  =0; 
-	    SmgDisplay_Numbers(0x0A,dht11_t->Temperature_high,dht11_t ->Temperature_low);
-	}
+	   SmgDisplay_Numbers(0x0B,dht11_t.Temperature_high,dht11_t.Temperature_low);
+    }
 	else{
      //Smg display Digital - humidity 
       Temp_RB1_LED  =0;      	 
       Hum_RB2_LED  =1; 
-     SmgDisplay_Numbers(0X0A, dht11_t->Humidity_high ,dht11_t->Humidify_low);
+     SmgDisplay_Numbers(0x0B,dht11_t.Humidity_high ,dht11_t.Humidify_low);
 
 	}
 
 }
+
+
 
 uint8_t DHT11ReadBuyte(void)
 {

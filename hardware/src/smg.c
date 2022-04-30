@@ -367,3 +367,33 @@ void SmgDisplay_Off(void)
 }
 
 
+/****************************************************************************************************
+ * 	*
+	*函数名称：void SmgDisplay_Numbers(uint8_t disdat3,uint8_t disdat2,uint8_t disdat1)
+	*函数功能：
+	*入口参数：disdat1 - 第一位数字 disdat2 -数码管第二位数字 disdat2 -数码管第三位数字
+	*出口参数：NO
+	*
+*******************************************************************************************************/
+
+void SetTemperature_Numbers(void)
+{
+   uint8_t  num1,num2,num3;
+   num1 = 0x0b;
+   num2 =cmd_t.tempTotal / 10;   
+   num3 =cmd_t.tempTotal %10;   
+   SmgDisplay_Numbers(num1,num2,num3);
+
+}
+
+
+void SetTimer_Timing(void)
+{
+   uint8_t  num2,num3;
+   num2 =cmd_t.timeTotal/10;   
+   num3 =cmd_t.timeTotal %10;   
+   
+  SmgDisplay_Numbers(0x0A,num2,num3); 
+
+
+}

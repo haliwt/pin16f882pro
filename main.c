@@ -29,10 +29,7 @@ void  main(void)
     	keyValue = KEY_Scan();
 		CheckRun_Mode(keyValue);
 		RunCommand();
-		Check_TimeTotime_Fun(); //timer be check auto shut down
-		
-    
-    }
+	}
     
     
     

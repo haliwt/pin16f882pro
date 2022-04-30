@@ -58,5 +58,8 @@ void SmgDisplay_Off(void);
 void SetTemperature_Numbers(void);
 void SetTimer_Timing(void);
 
+void SetTemperature_Numbers(void);
+void SetTimer_Timing(void);
+
 
 #endif 

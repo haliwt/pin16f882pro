@@ -152,17 +152,17 @@ void TMR1_DefaultInterruptHandler(void){
 static void TIMER1_CallBack_Fun(void)
 {
 	
-     static uint16_t i,z;
-	 static uint8_t ti;
+      static uint16_t i;
+	 static uint8_t ti,j,tn;
 	 i++ ;
-	 
+	 j++;
 	 if(i>999){ //1s
 
        i=0;
 	   ti++;
-	  cmd_t.blankSmg ++ ;
-	  cmd_t.timerTotime ++;
-	   if(ti==1){
+	   tn ++;
+       cmd_t.timer++;
+	   if(ti==2 || ti==3){ //2S
            cmd_t.gCmd_dispTemperatureTask=1;
 	   }
 	   else{
@@ -170,17 +170,24 @@ static void TIMER1_CallBack_Fun(void)
            ti=0;
 
 	   }
-	   if(cmd_t.timerTotime> 59){ //60s -> 1 minitue
-			cmd_t.timerTotime=0;
-		   if(cmd_t.timeStop==1){ //timer to time start 
+	   if(tn>59){ //60s -> 1 minitue
+			tn=0;
+		   if(cmd_t.timeStart==1){ //timer to time start 
 		        cmd_t.gCmd_timeToTime--;
+                if(cmd_t.gCmd_timeToTime ==0){
+                  cmd_t.gCmd_PowerOn =powerOff;
+                  cmd_t.gCmd_KeyOrder= 0;
+                  cmd_t.keyShutOff++;
+               
+                }
 		   	}
 
 	   }
 
 	 }
-	 
-	 
-
+     if(j>19){ //20ms
+         j=0;
+	  
+	 }
 
 }
