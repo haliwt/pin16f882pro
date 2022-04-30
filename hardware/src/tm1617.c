@@ -5,20 +5,14 @@
 
 void TM1617_GPIO_Iint(void)
 {
-   //TRISB = 0b11000000; //PB7,PB6 don't be used to gpio.
-   TRISBbits.TRISB5 = 0;
+  
+   TRISBbits.TRISB2 = 0;
    TRISBbits.TRISB4 =0 ;
    TRISBbits.TRISB3 = 0;
    
-   ANSELHbits.ANS13 = 0 ; //as digital gpio
-    
-   ANSELHbits.ANS11 =0 ;
-   ANSELHbits.ANS9 =0;
+  
  
 }
-
-
-
 
 void Tm1617_SendData(uint8_t onebyte)
 {

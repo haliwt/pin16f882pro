@@ -25,7 +25,7 @@ void EPWM_Initialize(void)
 	//ECCP1AS = 0x00;    
 	
 	// P1RSEN automatic_restart; P1DC 0; 
-	PWM1CON = 0x80;    
+	//PWM1CON = 0x80;    
 	
 	// STR1B P1B_to_port; STR1A P1A_to_port; STR1SYNC start_at_begin; 
 	//PSTR1CON = 0x00;    

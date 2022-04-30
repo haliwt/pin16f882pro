@@ -6,7 +6,7 @@ DHT11_info* dht11_t;
 void DHT11_Init(void)
 {
     TRISAbits.TRISA5 = 1 ; //gpio as input port
-    ANSELbits.ANS4 = 0 ;  //gpio as digital port
+ //   ANSELbits.ANS4 = 0 ;  //gpio as digital port
 
 }
 

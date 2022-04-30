@@ -7,9 +7,7 @@
 
 
 #include "main.h"
-//#pragma config FOSC = EXTRC_CLKOUT, WDTE = ON, PWRTE = OFF, MCLRE = ON, CP = OFF, CPD = OFF, BOREN = ON, IESO = ON, FCMEN = ON, LVP = ON, DEBUG = OFF
-#pragma config FOSC = 0x4, WDTE = 0x0, PWRTE = 0x1, MCLRE = 0x1, CP = 0x1, CPD = 0x1, BOREN = 0x3, IESO = 0x1, FCMEN = 0x1, LVP = 0x1, DEBUG = 0x1
-
+#pragma config FOSC = 0x1, WDTE = 0x0, PWRTE = 0x1, CP = 0x1, BOREN = 0x0
 /*
  * 
  */

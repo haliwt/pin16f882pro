@@ -5,8 +5,8 @@ void KEY_Init(void)
 {
 	 KEY_POWER_RC3_SetDigitalInput() ;   		
 	 KEY_TIMER_RC0_SetDigitalInput() ;   
-	 KEY_INC_RA6_SetDigitalInput()  ;    
-	 KEY_DEC_RA7_SetDigitalInput()  ;     
+	 KEY_INC_RB6_SetDigitalInput()  ;    
+	 KEY_DEC_RB5_SetDigitalInput()  ;     
 }
 
 uint8_t KEY_Scan(void)
@@ -24,12 +24,12 @@ uint8_t KEY_Scan(void)
         key.read &= ~0x02; // 0x1f & 0xfd =  0x1d -0b 1101
 
 	}
-	else if( KEY_INC_RA6_GetValue()   ==0){
+	else if( KEY_INC_RB6_GetValue()   ==0){
 
         key.read &= ~0x04; // 0x1f & 0xfB =  0x1b -0b 1011
 
 	}
-	else if( KEY_DEC_RA7_GetValue()   ==0){
+	else if( KEY_DEC_RB5_GetValue()   ==0){
 
         key.read &= ~0x08; // 0x1f & 0xf7 =  0x17 -0b 0111
 
