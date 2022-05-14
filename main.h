@@ -18,16 +18,15 @@
 #include "hardware/inc/periph.h"
 #include "hardware/inc/relay.h"
 #include "hardware/inc/run.h"
-#include "hardware/inc/usart.h"
-#include "hardware/inc/tim0.h"
+//#include "hardware/inc/tim0.h"
 #include "hardware/inc/tim1.h"
 #include "hardware/inc/ultrasonic.h"
 #include "hardware/inc/smg.h"
 #include "hardware/inc/interrupt_manager.h"
 #include "hardware/inc/tm1617.h"
 #include "hardware/inc/tim2.h"
-#include "hardware/inc/eeprom.h"
 
+#define _XTAL_FREQ   4000000
 
 #ifdef	__cplusplus
 extern "C" {

@@ -8,9 +8,10 @@ void (*TMR2_InterruptHandler)(void);
 /*****************************************************************************************
 *
 *Function Name:void TMR2_Initialize(void)
-*Function : Frequency is 25KHz , Tperiod = 0.04ms,Freq =8MHz ,prescale = 
-*           need timers is  0.04ms = 40us ,prescale = 4 
-*TMR2 = 256 - (40us)/(4 * (1/Freq) * prescale) = 256 -40/(4 * 0.125 *4)=256-20=236= 0xEC
+*Function : Frequency is 25KHz , Tperiod = 0.04ms,Freq =4MHz ,prescale = 
+*           need timers is  10ms = 10000us ,prescale = 1,4,16 ,postscale = 1,2,3,...16
+* TMR0 = 256 - (Tim(us) * freq /(4 * prescale))  =256 - (10000us * 4)/(4*postscle*16)=256-78=178 = 0xb2
+*TMR2 = 256 - (40us)/(4 * (1/Freq) * prescale) = 256 -40/(4 * 0.25 *4)=256-20=236= 0xEC
 *prescale = 4
 * PR2 = PWM Period /(4 * Tosc * prescale) -1 = 40us / (4*0.125 *4) -1=20 -1  =19 =0X13
 *
@@ -22,18 +23,18 @@ void TMR2_Initialize(void)
     // Set TMR2 to the options selected in the User Interface
 
    // TMR2 236; 
-    TMR2 =0xEC;
+    TMR2 =0xb2;
 
     // PR2 19; 
-     PR2 = 0x13;
+    PR2 = 0x00;
     PIR1bits.TMR2IF = 0;
     PIE1bits.TMR2IE = 1;
 
 	  // Set Default Interrupt Handler
     TMR2_SetInterruptHandler(TMR2_DefaultInterruptHandler);
    
-   // T2CKPS 1:4; T2OUTPS 1:1; TMR2ON on; 
-    T2CON = 0B00000101;//0x80;
+   // T2CKPS 1:16; T2OUTPS 1:8; TMR2ON on; 
+    T2CON = 0B01000010;//0x80;
 
    
 
@@ -104,6 +105,7 @@ void TMR2_ISR(void)
 
     // clear the TMR2 interrupt flag
     PIR1bits.TMR2IF = 0;
+    TMR2 =0xb2;
 
     // ticker function call;
     // ticker is 1 -> Callback function gets called everytime this ISR executes

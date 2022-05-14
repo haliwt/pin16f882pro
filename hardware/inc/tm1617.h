@@ -2,9 +2,9 @@
 #define __TM1617_H_
 #include "../../main.h"
 
-#define TM1617_SDA             PORTBbits.RB5/// P24   //OUTPUT
-#define TM1617_SCL             PORTBbits.RB4//   P25 //OUTPUT 
-#define TM1617_STB  	       PORTBbits.RB3// P26	 //片选信号
+#define TM1617_SDA             PORTBbits.RB2/// P24   //OUTPUT
+#define TM1617_SCL             PORTBbits.RB3//   P25 //OUTPUT 
+#define TM1617_STB  	       PORTBbits.RB4// P26	 //片选信号
 
 
 

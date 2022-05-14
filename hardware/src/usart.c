@@ -28,7 +28,7 @@ void EUSART_Initialize(void)
     // Set the EUSART module to the options selected in the user interface.
 
     // ABDOVF no_overflow; SCKP Non-Inverted; BRG16=16bit_generator; WUE disabled; ABDEN disabled; 
-   BAUDCTL = 0x08;
+   //BAUD = 0x08;
 
     // receive status and control reg: SPEN enabled; RX9 8-bit; CREN enabled; ADDEN disabled; SREN disabled; 
     RCSTA = 0x90;
@@ -36,11 +36,12 @@ void EUSART_Initialize(void)
     //transmit status and control reg:TX9 8-bit; TX9D 0; SENDB sync_break_complete; TXEN enabled; SYNC asynchronous; BRGH hi_speed; 
     TXSTA = 0x24;
 
-    // SP1BRGL 207//103; 
-    SPBRG = 0xcf; //0x67;
+    // BRGH 0; 
+    BRGH = 0x00;
+    // SPBRG 6 ,BAUD RATE 9600
+    SPBRG = 0x6;
 
-    // SP1BRGH 0; 
-    SPBRGH = 0x00;
+   
 
 
     EUSART_SetFramingErrorHandler(EUSART_DefaultFramingErrorHandler);

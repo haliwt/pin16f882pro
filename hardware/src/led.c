@@ -4,13 +4,9 @@ static void Delay(uint16_t t);
 
 void LED_Init(void)
 {
-	ANSELbits.ANS0 = 0 ; //as digital I/O
-	ANSELbits.ANS1 = 0;
-	ANSELbits.ANS2 = 0;
-	ANSELbits.ANS3 =0 ;
-
-	ANSELHbits.ANS10 = 0; //RB1
-	ANSELHbits.ANS8  =0;   //RB2
+	
+   
+	
 
 	TRISAbits.TRISA0 = 0; //as output I/O
 	TRISAbits.TRISA1 = 0;
@@ -19,38 +15,61 @@ void LED_Init(void)
 
 	TRISBbits.TRISB1 = 0;
 	TRISBbits.TRISB2 = 0;
+    
+    
+    PORTAbits.RA0=0;
+	PORTAbits.RA1 =0;
+    PORTAbits.RA2 =0;
+    PORTAbits.RA3 =0;
+    
+    PORTBbits.RB1 =0;
+    PORTBbits.RB2 = 0;
+    
 
-	PORTA = 0x0;
-	PORTC = 0x0;
-	
-
-	
-}
+ }
 
 void Breath_Led(void)
 {
     
-    static uint16_t pwm =0;
-    for(pwm=500;pwm>0;pwm--){
-		  
-        Breath_RA0_LED =1 ;//On
-        Delay(pwm);//__delay_ms(pwm);
-        //__delay_ms(pwm);
-        Breath_RA0_LED=0 ; //off
-        Delay(500-pwm);//__delay_ms(500-pwm);
+    static uint16_t i,t;
+#if 0  
+        // Breath_RA0_LED =1 ; //LED1?  
+    if(cmd_t.gCmd_dispTemperatureTask==1){
+      // delay_us(t); //??t us
+        PORTCbits.RC3=1;
+        // __delay_ms(500);
+        Breath_RA0_LED =0 ; //LED1?
+        // PORTCbits.RC3=0;
+        //__delay_ms(500);
+    }
+    else{
+    
+     PORTCbits.RC3=0;
+      Breath_RA0_LED =1 ; //LED1?
+    
+    }
+#endif 
+        
+#if 1
+   
+        for(i = 0; i < 600; i++){
+            Breath_RA0_LED =1 ; //LED1?             delay_us(t); //??t us
+            Delay(i);
+            Breath_RA0_LED =0 ; //LED1?
+            Delay(600-i); //??501-t us
+        }
+       
+    
 
-
-   }
-
-   for(pwm=0;pwm<500;pwm++){
-
-        Breath_RA0_LED =1 ;//On
-        Delay(pwm);//__delay_ms(pwm);
-        Breath_RA0_LED=0 ; //off
-        Delay(500-pwm);//__delay_ms(500-pwm);
-
-     }
-
+      for(i = 600; i > 0; i--){
+           
+            Breath_RA0_LED =1 ; //??t
+             Delay(i); //LED1?
+            Breath_RA0_LED =0; //LED1?
+             Delay(600-i); //??501-t
+        }
+      
+#endif 
 
 
 }
@@ -83,7 +102,11 @@ void PowerOn_LED_Off(void )
 
 static void Delay(uint16_t t)
 {
-    while(--t);
+   
+    while(t--);
+     
+    
+     
 }
 
 

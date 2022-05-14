@@ -9,7 +9,7 @@
 
 
 /**************************************************
-	    //                a
+	//                a
         //            ---------
         //           |         |
         //         f |         | b
@@ -40,11 +40,11 @@
 
 
 
-void SmgDisplay_Numbers(uint8_t disdat3,uint8_t disdat2,uint8_t disdat1);
+void SmgDisplay_Numbers(uint8_t num1,uint8_t num2,uint8_t num3);
 
 
 
-void SmgDisplay_Char(void);
+void SmgDisplay_H_Char(void);
 
 
 void SmgDisplay_DynamicTemperatureNum(void);
@@ -55,7 +55,8 @@ void SmgDisplay_DynamicTimeNum(void);
 void SmgDisplay_Off(void);
 
 
-
+void SetTemperature_Numbers(void);
+void SetTimer_Timing(void);
 
 
 #endif 

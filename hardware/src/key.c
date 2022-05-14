@@ -5,8 +5,8 @@ void KEY_Init(void)
 {
 	 KEY_POWER_RC3_SetDigitalInput() ;   		
 	 KEY_TIMER_RC0_SetDigitalInput() ;   
-	 KEY_INC_RA6_SetDigitalInput()  ;    
-	 KEY_DEC_RA7_SetDigitalInput()  ;     
+	 KEY_INC_RB6_SetDigitalInput()  ;    
+	 KEY_DEC_RB5_SetDigitalInput()  ;     
 }
 
 uint8_t KEY_Scan(void)
@@ -14,7 +14,7 @@ uint8_t KEY_Scan(void)
     uint8_t  reval = 0;
 
 	key.read = _KEY_ALL_OFF; //0x1F 
-   if(KEY_POWER_RC2_GetValue()   ==0)
+   if(KEY_POWER_RC3_GetValue()   ==0)
 	{
 		
         key.read &= ~0x01; // 0x1f & 0xfe =  0x1E = 0b 1110
@@ -24,12 +24,12 @@ uint8_t KEY_Scan(void)
         key.read &= ~0x02; // 0x1f & 0xfd =  0x1d -0b 1101
 
 	}
-	else if( KEY_INC_RA6_GetValue()   ==0){
+	else if( KEY_INC_RB6_GetValue()   ==0){
 
         key.read &= ~0x04; // 0x1f & 0xfB =  0x1b -0b 1011
 
 	}
-	else if( KEY_DEC_RA7_GetValue()   ==0){
+	else if( KEY_DEC_RB5_GetValue()   ==0){
 
         key.read &= ~0x08; // 0x1f & 0xf7 =  0x17 -0b 0111
 
@@ -86,7 +86,7 @@ uint8_t KEY_Scan(void)
 			}
 			else if(key.read == _KEY_ALL_OFF)  // loose hand 
 				{
-					if(++key.off_time>30) //don't holding key dithering
+					if(++key.off_time>20) //don't holding key dithering
 					{
 						key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01
 						
@@ -108,7 +108,7 @@ uint8_t KEY_Scan(void)
 		{
 			if(key.read == _KEY_ALL_OFF)
 			{
-				if(++key.off_time>100)
+				if(++key.off_time>10)
 				{
 					key.state   = start;
                   

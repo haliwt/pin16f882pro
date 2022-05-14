@@ -4,18 +4,17 @@
 #include "../../main.h"
 
 #define KEY_POWER_RC3_SetDigitalInput()    		do { TRISCbits.TRISC3 = 1; } while(0)
-//#define KEY_POWER_RC3_SetDigitalOutput()   		do { TRISCbits.TRISC3 = 0; } while(0)
 
 #define KEY_TIMER_RC0_SetDigitalInput()         do { TRISCbits.TRISC0 = 1; } while(0)  //gpio as input 
-#define KEY_INC_RA6_SetDigitalInput()           do { TRISAbits.TRISA6 = 1; } while(0)  //gpio as input 
-#define KEY_DEC_RA7_SetDigitalInput()           do { TRISAbits.TRISA7 = 1; } while(0)  //gpio as input
+#define KEY_INC_RB6_SetDigitalInput()           do { TRISBbits.TRISB6 = 1; } while(0)  //gpio as input 
+#define KEY_DEC_RB5_SetDigitalInput()           do { TRISBbits.TRISB5 = 1; } while(0)  //gpio as input
 
 
 
-#define KEY_POWER_RC2_GetValue()           PORTCbits.RC3
+#define KEY_POWER_RC3_GetValue()           PORTCbits.RC3
 #define KEY_TIMER_RC0_GetValue()		   PORTCbits.RC0
-#define KEY_INC_RA6_GetValue()             PORTAbits.RA6
-#define KEY_DEC_RA7_GetValue()			   PORTAbits.RA7
+#define KEY_INC_RB6_GetValue()             PORTBbits.RB6//PORTAbits.RA6  -PIC16F73 don't has RA6, RA7
+#define KEY_DEC_RB5_GetValue()			   PORTBbits.RB5//PORTAbits.RA7
 
 
 #define		_KEY_ALL_OFF				    0X1F

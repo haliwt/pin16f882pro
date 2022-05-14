@@ -7,10 +7,10 @@ static void TIMER0_CallBack_Fun(void);
 /**
  * Tim  need timer times setup example 10 000us  
  * Freq = system osc frequency 8MHz
- *__XTAL-FREQ = 8000000 
+ *__XTAL-FREQ = 4000000 
  * prescale = 128 
  * TMR0 = [256-(__XTAL-FREQ/4)/prescaler * Timer0 overflow(s)]=256-[(800000/4)/128] * 0.01 -1=256-156.25=100=0x64
- * TMR0 = 256 - (Tim(us) * freq /(4 * prescale))  =256 - (1000us * 8)/(4*128)==256-156.25=100  =100 = 0x64
+ * TMR0 = 256 - (Tim(us) * freq /(4 * prescale))  =256 - (10000us * 4)/(4*128)==256-78=178 = 0xb2
  * 
 */
 
@@ -22,10 +22,10 @@ void TMR0_Initialize(void)
     OPTION_REG = 0b00000110; 
 	
     // TMR0 100; 
-    TMR0 = 0x64;
+    TMR0 = 0xb2;
 	
     // Load the TMR value to reload variable
-    timer0ReloadVal= 99;
+    timer0ReloadVal= 0xb2;
 
     // Clear Interrupt flag before enabling the interrupt
     INTCONbits.TMR0IF = 0;
@@ -64,7 +64,8 @@ void TMR0_ISR(void)
     // Clear the TMR0 interrupt flag
     INTCONbits.TMR0IF = 0;
 
-    TMR0 = timer0ReloadVal;
+    //TMR0 = timer0ReloadVal;
+      TMR0 = 0xb2;
 
     // ticker function call;
     // ticker is 1 -> Callback function gets called every time this ISR executes

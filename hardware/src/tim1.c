@@ -18,15 +18,14 @@ static void TIMER1_CallBack_Fun(void);
 *           TMR1H:TMR1L = [65536-(__XTAL-FREQ/4)/prescaler * Timer0 overflow(s)]
 *				 =(65536 - [(8000000/4)/prscaler] * 0.001s) -1 = 65536 - 2000= 63535
 *           Tim is need timer ,explame 1000us -unit us
-*           Freq = system clock frequency is = 8MHz 
+*           Freq = system clock frequency is = 4MHz 
 *           prescaler = 1,2,4,8,
 			prscale=1
-*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 8)/(4*1))=63536-2000=63536 =0xF830
+*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 4)/(4*1))=65536-1000=64536 =0xFC18
             prscaler = 8 
-*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 8)/(4*8))=65536-250 =65286 =0xff06
+*           TMR1H:TMR1L = 65536-[(Tim(us)*Freq)/(4*precals)] =65536-((1000 * 4)/(4*8))=65536-125 =65411 =0xff83
 *
-*           prescaler = 8:
-*           TMR1H:TMR1L =65536 -(Times)/(4x1/freq * prescaler) = 65536- 1000us/(4*0.125 * 8) =65536-250 =65286
+*          
 */
 
 void TMR1_Initialize(void)
@@ -37,25 +36,23 @@ void TMR1_Initialize(void)
   
 
     //TMR1H 248; 
-    TMR1H = 0xF8;
+    TMR1H = 0xff;
 
     //TMR1L 48; 
-    TMR1L = 0x30;
+    TMR1L = 0x83;
 
     // Clearing IF flag before enabling the interrupt.
     PIR1bits.TMR1IF = 0;
 
-    // Load the TMR value to reload variable
-    timer1ReloadVal=(uint16_t)((TMR1H << 8) | TMR1L);
+ 
 
     // Enabling TMR1 interrupt.
     PIE1bits.TMR1IE = 1;
 
-    // Set Default Interrupt Handler
-    TMR1_SetInterruptHandler(TMR1_DefaultInterruptHandler);
+  
 
-    // T1CKPS 1:1; T1OSCEN disabled; nT1SYNC synchronize; TMR1CS FOSC/4; TMR1ON enabled; 
-    T1CON = 0x01;
+    // T1CKPS 1:8; T1OSCEN disabled; nT1SYNC synchronize; TMR1CS FOSC/4; TMR1ON enabled; 
+    T1CON = 0B00110000;
 }
 
 void TMR1_StartTimer(void)
@@ -117,11 +114,17 @@ void TMR1_ISR(void)
 
     // Clear the TMR1 interrupt flag
     PIR1bits.TMR1IF = 0;
-    TMR1_WriteTimer(timer1ReloadVal);
+    
+    //TMR1H 248; 
+    TMR1H = 0xff;
+
+    //TMR1L 48; 
+    TMR1L = 0x83;
 
     // ticker function call;
     // ticker is 1 -> Callback function gets called everytime this ISR executes
-    TMR1_CallBack();
+   // TMR1_CallBack();
+    TIMER1_CallBack_Fun();
 }
 
 void TMR1_CallBack(void)

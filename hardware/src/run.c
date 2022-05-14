@@ -1,4 +1,4 @@
-   #include "../inc/run.h"
+#include "../inc/run.h"
 #include "../../main.h"
 
 CMDRUN_T cmd_t;
@@ -201,7 +201,7 @@ void RunCommand(void)
 		    //after 5s start timer  blank Smg .
             if(cmd_t.blankSmg > 4 && cmd_t.blankNum < 3){
 			    if(cmd_t.gCmd_beepTimer ==0){
-		           SmgDisplay_Numbers(0x0A,0x0A,0x0A);
+		           SmgDisplay_Numbers(0x0b,0x0b,0x0b);
 			    }
 				else{
 				  SmgDisplay_DynamicTimeNum();
@@ -232,22 +232,6 @@ void RunCommand(void)
    
 }
 
-void Check_TimeTotime_Fun(void)
-{
-     if(cmd_t.gCmd_timeToTime ==0 && cmd_t.timeStop==1){
-        Beep_Fun();
-		cmd_t.gCmd_PowerOn =powerOff;
-		TMR2_StopTimer(); //turn off ultrasonic 
-	    cmd_t.gCmd_KeyOrder=0;
-		PowerOn_LED_Off();
-		FAN_OffFun();   
-		cmd_t.gCmd_timeToTime=0;
-
-	 }
-
-
-
-}
 
 
 
