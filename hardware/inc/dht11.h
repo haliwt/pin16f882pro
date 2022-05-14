@@ -2,7 +2,6 @@
 #define __DHT11_H_
 #include "../../main.h"
 
-#define _XTAL_FREQ  8000000
 
 #define DHT11_RA5_GetValue()           PORTAbits.RA5
 #define DHT11_DATA_BIT()               PORTAbits.RA5 

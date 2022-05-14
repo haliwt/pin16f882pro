@@ -6,59 +6,43 @@ CMDRUN_T cmd_t;
 void CheckRun_Mode(unsigned char keyvalue)
 {
     static uint8_t currKeyPower = 0xff,currKeyInc =0xff,currKeyDec= 0xff,
-	                   currKeyTimer= 0xff,currKeyLongTimer=0xff,ipowerOn=0;
+	            currKeyTimer= 0xff,currKeyLongTimer=0xff,ipowerOn=0;
 
 	switch(keyvalue){
      
 
-		case powerOff: //breathe led blnk
 		
-				if(cmd_t.gCmd_PowerOn == powerOff){
-	                  cmd_t.gCmd_KeyOrder=0;
-					  cmd_t.keyPoewr++;
-					  cmd_t.setTimeStyle =0;
-
-				}
-				else{
-					
-					return ;
-
-				}
-	
-	    break;
         case powerOn :
 			   
-			   ipowerOn ++ ;
-			   if(ipowerOn ==1){
-			   	
-				   if(currKeyPower != cmd_t.keyPoewr){
-				   	   currKeyPower = cmd_t.keyPoewr ;
-                       cmd_t.gCmd_PowerOn =powerOn;
-					  cmd_t.keyDec++ ;
-					  cmd_t.keyLongTimer++;
-					  cmd_t.keyTimer++;
-					  cmd_t.keyInc++;
+			ipowerOn = ipowerOn ^ 0x01;
+			if(ipowerOn ==1){
+			   	   
+				cmd_t.gCmd_PowerOn =powerOn;
+				cmd_t.keyDec++ ;
+				cmd_t.keyLongTimer++;
+				cmd_t.keyTimer++;
+				cmd_t.keyInc++;
+				
+				Beep_Fun();
+				PowerOn_LED_On(); //include plasma
+				// TMR2_Start();  //turn on ultrasonic
+				FAN_OnFun();
+					
+				cmd_t.gCmd_KeyOrder=powerOn;
+				
+						
+				
+			}
+			else{
 
-				       Beep_Fun();
-					   PowerOn_LED_On(); //include plasma
-					   TMR2_Start();  //turn on ultrasonic
-	                   FAN_OnFun();
+               cmd_t.gCmd_KeyOrder=powerOff;
+			   Beep_Fun();
+			
 
-					   
-				   	}
+			}
 				   
-				   cmd_t.gCmd_KeyOrder= 1;
-			   	}
-			    else{
-					Beep_Fun();
-					ipowerOn=0;
-					cmd_t.gCmd_PowerOn =powerOff;
-					TMR2_StopTimer(); //turn off ultrasonic 
-				    cmd_t.gCmd_KeyOrder=0;
-					PowerOn_LED_Off();
-					FAN_OffFun();
-				}
-			 
+			
+
 
 		break;
 
@@ -84,7 +68,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 					}
 					
 				}
-
+					cmd_t.keyPoewr++;
 
 			 }
 				
@@ -114,7 +98,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 
 						}
 				   }
-
+					cmd_t.keyPoewr++;
 				}
 
 
@@ -130,27 +114,27 @@ void CheckRun_Mode(unsigned char keyvalue)
 						Beep_Fun();
 
 			   }
-
+				cmd_t.keyPoewr++;
 		   }
 		break;
 		
 
-		case timerOn: //long time be pressed
+		case timerOn: //long time be pressed-0x82
              if(cmd_t.gCmd_PowerOn ==powerOn){
 			   if(currKeyLongTimer != cmd_t.keyTimer){
 				   	  currKeyLongTimer = cmd_t.keyLongTimer ;
 					  cmd_t.timeNormal = 1;
 					  cmd_t.gCmd_KeyOrder=timerOn;
 			          cmd_t.setTimeStyle =1; //set timer modle 
-						Beep_Fun();
+					Beep_Fun();
 
 			   }
-
+				cmd_t.keyPoewr++;
 		   }
 		break;
 
 		default:
-			cmd_t.gCmd_KeyOrder =0xFE;
+	
 		
 		break;
 	}
@@ -163,14 +147,30 @@ void RunCommand(void)
    
 	switch(cmd_t.gCmd_KeyOrder){
 
-		case 0:
+		case powerOff: //breathe led blnk
+		
+			
+	                  cmd_t.gCmd_KeyOrder=0;
+					  cmd_t.keyPoewr++;
+					  cmd_t.setTimeStyle =0;
 
-			Breath_Led();
+				Beep_Fun();
+			
+				TMR2_StopTimer(); //turn off ultrasonic 
+				
+				PowerOn_LED_Off();
+				FAN_OffFun();
 
-		break;
+		
+				
+				
+	
+	    break;
 
 		case powerOn: //power On
-		     DHT11_DispSmg_Value();
+		     Breath_RA0_LED =1 ; //on
+			 TIMEER_RA1_LED  =1 ; //on
+		   //  DHT11_DispSmg_Value();
 		
         break;
 
@@ -187,7 +187,7 @@ void RunCommand(void)
 		case dispTiimer : //display 2s switch display temperature
 
 			
-			 SmgDisplay_DynamicTimeNum();
+			SmgDisplay_DynamicTimeNum();
 			cmd_t.keyDec++ ;
 			cmd_t.keyLongTimer++;
 			cmd_t.keyInc++;

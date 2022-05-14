@@ -3,7 +3,7 @@
 #include "../../main.h"
 
 #define Breath_RA0_LED   	   	 PORTAbits.RA0 
-#define powerOn_RA1_LED      	 PORTAbits.RA1
+#define TIMEER_RA1_LED      	 PORTAbits.RA1
 #define PTC_RA2_LED         	 PORTAbits.RA2 
 #define Temp_RB1_LED        	 PORTBbits.RB1
 #define Hum_RB2_LED         	 PORTBbits.RB2

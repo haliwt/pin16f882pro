@@ -28,10 +28,17 @@ void  main(void)
 	cmd_t.gCmd_KeyOrder =0xFE;
     while(1)
     {
-    	 Breath_Led();
-       // keyValue = KEY_Scan();
-		//CheckRun_Mode(keyValue);
-		//RunCommand();
+#if 0
+        if(cmd_t.gCmd_dispTemperatureTask==1 && cmd_t.gCmd_PowerOn !=powerOn ){
+            Breath_Led();
+		}
+		else{
+		   keyValue = KEY_Scan();
+		}
+#endif 
+        keyValue = KEY_Scan();
+		CheckRun_Mode(keyValue);
+		RunCommand();
 		
 	}
     

@@ -32,25 +32,8 @@ void Breath_Led(void)
 {
     
     static uint16_t i,t;
-#if 0  
-        // Breath_RA0_LED =1 ; //LED1?  
-    if(cmd_t.gCmd_dispTemperatureTask==1){
-      // delay_us(t); //??t us
-        PORTCbits.RC3=1;
-        // __delay_ms(500);
-        Breath_RA0_LED =0 ; //LED1?
-        // PORTCbits.RC3=0;
-        //__delay_ms(500);
-    }
-    else{
-    
-     PORTCbits.RC3=0;
-      Breath_RA0_LED =1 ; //LED1?
-    
-    }
-#endif 
-        
-#if 1
+
+ #if 1
    
         for(i = 0; i < 600; i++){
             Breath_RA0_LED =1 ; //LED1?             delay_us(t); //??t us
@@ -78,7 +61,7 @@ void Breath_Led(void)
 void PowerOn_LED_On(void)
 {
 	Breath_RA0_LED  =1; 	   	
-    powerOn_RA1_LED  =1;    	
+    TIMEER_RA1_LED  =1;    	
   //  PTC_RA2_LED         	
    // Temp_RB1_LED  =1;      	 
    // Hum_RB2_LED         
@@ -90,7 +73,7 @@ void PowerOn_LED_On(void)
 void PowerOn_LED_Off(void )
 {
 	Breath_RA0_LED   =0; 	   	
-    powerOn_RA1_LED  =0;    	
+    TIMEER_RA1_LED  =0;    	
   //  PTC_RA2_LED         	
    // Temp_RB1_LED  =1;      	 
    // Hum_RB2_LED         

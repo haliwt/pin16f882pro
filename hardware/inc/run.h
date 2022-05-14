@@ -48,11 +48,11 @@ enum runcmd{
 
     powerOff = 0x0,
 	powerOn  = 0x01,
-	adjustIncreas = 0x02,
-	adjustDecreas = 0x03,
-	dispTiimer  = 0x04,
+	dispTiimer  = 0x02,
+	adjustIncreas = 0x04,
+	adjustDecreas = 0x08,
 	dispTemperature = 0x5,
-	timerOn = 0X06
+	timerOn = 0X82
 
 
 };
