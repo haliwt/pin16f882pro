@@ -13,7 +13,6 @@ typedef struct _CMDRUN_{
 	uint8_t gCmd_breathLed;
    
    //key
-	uint8_t keyPoewr;
 	uint8_t keyInc;
 	uint8_t keyDec;
 	uint8_t keyTimer;

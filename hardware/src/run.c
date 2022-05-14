@@ -68,7 +68,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 					}
 					
 				}
-					cmd_t.keyPoewr++;
+					
 
 			 }
 				
@@ -98,7 +98,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 
 						}
 				   }
-					cmd_t.keyPoewr++;
+					
 				}
 
 
@@ -114,7 +114,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 						Beep_Fun();
 
 			   }
-				cmd_t.keyPoewr++;
+				
 		   }
 		break;
 		
@@ -129,7 +129,7 @@ void CheckRun_Mode(unsigned char keyvalue)
 					Beep_Fun();
 
 			   }
-				cmd_t.keyPoewr++;
+				
 		   }
 		break;
 
@@ -151,7 +151,6 @@ void RunCommand(void)
 		
 			
 	                  cmd_t.gCmd_KeyOrder=0;
-					  cmd_t.keyPoewr++;
 					  cmd_t.setTimeStyle =0;
 
 				Beep_Fun();
@@ -170,6 +169,8 @@ void RunCommand(void)
 		case powerOn: //power On
 		     Breath_RA0_LED =1 ; //on
 			 TIMEER_RA1_LED  =1 ; //on
+			 Temp_RB1_LED  =1;      	 
+             Hum_RB2_LED  =0; 
 		   //  DHT11_DispSmg_Value();
 		
         break;
