@@ -20,7 +20,7 @@ typedef struct _DHT11_{
 
 }DHT11_info;
 
-extern DHT11_info* dht11_t;
+extern DHT11_info dht11_t;
 
 void DHT11_Init(void);
 

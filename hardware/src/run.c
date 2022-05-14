@@ -170,8 +170,9 @@ void RunCommand(void)
 		     Breath_RA0_LED =1 ; //on
 			 TIMEER_RA1_LED  =1 ; //on
 			 Temp_RB1_LED  =1;      	 
-             Hum_RB2_LED  =0; 
-		   //  DHT11_DispSmg_Value();
+             Hum_RB2_LED  =1; 
+			 AI_RA3_LED =1;
+		     DHT11_DispSmg_Value();
 		
         break;
 

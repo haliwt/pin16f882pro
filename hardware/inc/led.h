@@ -7,7 +7,7 @@
 #define PTC_RA2_LED         	 PORTAbits.RA2 
 #define Temp_RB1_LED        	 PORTBbits.RB1
 #define Hum_RB2_LED         	 PORTBbits.RB2
-#define Smart_RA3_LED       	 PORTAbits.RA3
+#define AI_RA3_LED       	     PORTAbits.RA3
 
 
 

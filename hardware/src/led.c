@@ -62,11 +62,9 @@ void PowerOn_LED_On(void)
 {
 	Breath_RA0_LED  =1; 	   	
     TIMEER_RA1_LED  =1;    	
-  //  PTC_RA2_LED         	
-   // Temp_RB1_LED  =1;      	 
-   // Hum_RB2_LED         
-   Smart_RA3_LED  =1;     	
-
+    Temp_RB1_LED  =1;      	 
+     Hum_RB2_LED  =1;       
+   AI_RA3_LED =1;
 
 
 }
@@ -74,10 +72,10 @@ void PowerOn_LED_Off(void )
 {
 	Breath_RA0_LED   =0; 	   	
     TIMEER_RA1_LED  =0;    	
-  //  PTC_RA2_LED         	
-   // Temp_RB1_LED  =1;      	 
-   // Hum_RB2_LED         
-   Smart_RA3_LED  =0;     
+    Temp_RB1_LED  =0;      	 
+    Hum_RB2_LED  =0;       	 
+   AI_RA3_LED =0;        
+    
 
 }
 
