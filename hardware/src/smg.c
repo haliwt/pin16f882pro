@@ -18,83 +18,6 @@ const unsigned char segNumber[]={
                                                
                                              
 };
-
-// const unsigned char segNumber_high[]={
-// 	0xf0, //0
-// 	0x60,//1
-//     0x30,//2
-// 	0xf0, //3
-//     0x60, //4
-// 	0xd0, //5
-// 	0x50, //6
-// 	0x70, //7
-// 	0xf0, //8
-// 	0xf0, //9
-// 	0x0,
-
-// };
-
-// const unsigned char segNumber_low[]={
-// 	0x03, //0
-// 	0x00, //1
-//     0x05, //2
-// 	0x04, //3
-// 	0x06, //4
-// 	0x02, //5
-// 	0x07, //6
-// 	0x00,//7
-// 	0x07,//8
-// 	0x06,//9
-//     0x0,
-
-// };
-
-
-
-const unsigned char segNumber_highBit[]={
-	
-     
-         seg_a+seg_b+seg_c+seg_d,        		// char "0"  0x00
-         seg_b+seg_c,                           			// char "1"  0x01
-         seg_a+seg_b+seg_d,              		// char "2"  0x02
-         seg_a+seg_b+seg_c+seg_d,               		// char "3"  0x03
-         seg_b+seg_c,                   	    // char "4"  0x04
-         seg_a+seg_c+seg_d,              		// char "5"  0x05
-         seg_a+seg_c+seg_d,              	// char "6"  0x06
-         seg_a+seg_b+seg_c,                    		// char "7"  0x07
-         seg_a+seg_b+seg_c+seg_d,  		// char "8"  0x08
-         seg_a+seg_b+seg_c+seg_d,        		// char "9"  0x09
-		 seg_b+seg_c,                     // char "H"  0x0A
-         0                                      			// char "NLL"  0x0B
-                                               
-                                             
-};
-
-const unsigned char segNumber_lowBit[]={
-	
-     
-         seg_e+seg_f,        		// char "0"  0x00
-         0,                           			// char "1"  0x01
-         seg_e+seg_g,              		// char "2"  0x02
-         seg_g,               		// char "3"  0x03
-         seg_f+seg_g,                   	    // char "4"  0x04
-         seg_f+seg_g,              		// char "5"  0x05
-         seg_e+seg_f+seg_g,              	// char "6"  0x06
-         seg_f,                    		// char "7"  0x07
-         seg_e+seg_f+seg_g,  		// char "8"  0x08
-         seg_f+seg_g,        		// char "9"  0x09
-		 seg_e+seg_f+seg_g,                     // char "H"  0x0A
-         0                                      			// char "NLL"  0x0B
-                                               
-                                             
-};
-
-		 
-#define CHAR_H_HI     seg_b+seg_c         //char "H"	
-#define CHAR_H_LO     seg_e+seg_f+seg_g   //char "H"
-
-
-
 /****************************************************************************************************
  * 	*
 	*函数名称：void SmgDisplay_Numbers(uint8_t disdat3,uint8_t disdat2,uint8_t disdat1)
@@ -105,7 +28,12 @@ const unsigned char segNumber_lowBit[]={
 *******************************************************************************************************/
 void SmgDisplay_Numbers(uint8_t num1,uint8_t num2,uint8_t num3)
 {
-        TM1617_STB =0 ;  
+        
+		TM1617_STB=0;   
+		Tm1617_SendData(0x03);// write seven segment
+        TM1617_STB=1; 
+		
+		TM1617_STB =0 ;  
         Tm1617_SendData(ModeDispTM1617); //写数据到显示寄存器
 	    TM1617_STB =1; 
 	
@@ -161,7 +89,12 @@ void SmgDisplay_Numbers(uint8_t num1,uint8_t num2,uint8_t num3)
 
 void SmgDisplay_H_Char(void)
 {
-	    TM1617_STB =0 ;  
+	    TM1617_STB=0;   
+		Tm1617_SendData(0x03);// write seven segment
+        TM1617_STB=1; 
+		
+		
+		TM1617_STB =0 ;  
         Tm1617_SendData(ModeDispTM1617); //写数据到显示寄存器
 	    TM1617_STB =1; 
 	
@@ -174,10 +107,12 @@ void SmgDisplay_H_Char(void)
 		TM1617_STB=0;   
 		Tm1617_SendData(Addr00H);
 		//指向地址00H  
-	    Tm1617_SendData(CHAR_H_HI); //主显示.DIG - 1
+	    Tm1617_SendData(segNumber[0x0a]); //主显示.DIG - 1
+		 TM1617_STB=1; 
+         TM1617_STB=0; 
 	    //display address is 01H
 	    Tm1617_SendData(Addr01H);
-		Tm1617_SendData(CHAR_H_LO); //主显示.DIG -1
+		Tm1617_SendData(segNumber[0x0a]); //主显示.DIG -1
 	    TM1617_STB=1; 
 		
 		
@@ -192,7 +127,11 @@ void SmgDisplay_H_Char(void)
 void SmgDisplay_DynamicTemperatureNum(void)
 {
 
-	    TM1617_STB =0 ;  
+	    TM1617_STB=0;   
+		Tm1617_SendData(0x03);// write seven segment
+        TM1617_STB=1; 
+		
+		TM1617_STB =0 ;  
         Tm1617_SendData(ModeDispTM1617); //写数据到显示寄存器
 	    TM1617_STB =1; 
 	
@@ -205,6 +144,9 @@ void SmgDisplay_DynamicTemperatureNum(void)
 		Tm1617_SendData(Addr00H);
 		//指向地址00H  
 	    Tm1617_SendData(segNumber[0x0b]); //主显示.DIG - 1
+		 TM1617_STB=1; 
+
+         TM1617_STB=0; 
 	    //display address is 01H
 	    Tm1617_SendData(Addr01H);
 		Tm1617_SendData(segNumber[0x0b]); //主显示.DIG - 1
@@ -216,11 +158,13 @@ void SmgDisplay_DynamicTemperatureNum(void)
 			TM1617_STB=0;   
 			Tm1617_SendData(Addr02H);
 			//指向地址2   
-		    Tm1617_SendData(segNumber[2]); //主显示2位---十位
+		    Tm1617_SendData(segNumber[cmd_t.tempTotal /10]); //主显示2位---十位
+            TM1617_STB=1; 
 
+            TM1617_STB=0; 
 			//display address is 03H
 			Tm1617_SendData(Addr03H);
-			Tm1617_SendData(segNumber[2]); //主显示2 位---十位
+			Tm1617_SendData(segNumber[cmd_t.tempTotal/10]); //主显示2 位---十位
 	        TM1617_STB=1; 
 
 
@@ -229,10 +173,13 @@ void SmgDisplay_DynamicTemperatureNum(void)
 			Tm1617_SendData(Addr0CH);
 			//指向地址0CH  
 		
-			Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示.DIG -1
+			Tm1617_SendData(segNumber[(cmd_t.tempTotal)%10]); //主显示.DIG -1
+			 TM1617_STB=1; 
+
+             TM1617_STB=0; 
 			//display address 0DH
 			Tm1617_SendData(Addr0DH);
-			Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示.DIG - 1
+			Tm1617_SendData(segNumber[cmd_t.tempTotal%10]); //主显示.DIG - 1
 			TM1617_STB=1; 
 			
 			
@@ -245,7 +192,9 @@ void SmgDisplay_DynamicTemperatureNum(void)
 			Tm1617_SendData(Addr02H);
 			//指向地址2   
 		    Tm1617_SendData(segNumber[3]); //主显示2位---十位
+             TM1617_STB=1;
 
+             TM1617_STB=0; 
 			//display address is 03H
 			Tm1617_SendData(Addr03H);
 			Tm1617_SendData(segNumber[3]); //主显示2 位---十位
@@ -258,6 +207,9 @@ void SmgDisplay_DynamicTemperatureNum(void)
 			
 			//指向地址0CH  
 			Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示1位---个位
+			 TM1617_STB=1; 
+
+            TM1617_STB=0; 
 			//display address 0DH
 			Tm1617_SendData(Addr0DH);
 			Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示1位---个位
@@ -276,7 +228,9 @@ void SmgDisplay_DynamicTemperatureNum(void)
 		   Tm1617_SendData(Addr02H);
 		   //指向地址2	 
 		   Tm1617_SendData(segNumber[4]); //主显示2位---十位
+            TM1617_STB=1; 
 
+            TM1617_STB=0; 
 		   //display address is 03H
 		   Tm1617_SendData(Addr03H);
 		   Tm1617_SendData(segNumber[4]); //主显示2 位---十位
@@ -288,6 +242,8 @@ void SmgDisplay_DynamicTemperatureNum(void)
 		   Tm1617_SendData(Addr0CH);
 		   //指向地址0CH  
 		   Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示1位---个位
+		    TM1617_STB=1; 
+             TM1617_STB=0; 
 		   //display address 0DH
 		   Tm1617_SendData(Addr0DH);
 		   Tm1617_SendData(segNumber[cmd_t.tempTotal]); //主显示1位---个位
@@ -304,7 +260,12 @@ void SmgDisplay_DynamicTemperatureNum(void)
 void SmgDisplay_DynamicTimeNum(void)
 
 {
-	 	TM1617_STB =0 ;  
+	 	
+		TM1617_STB=0;   
+		Tm1617_SendData(0x03);// write seven segment
+        TM1617_STB=1; 
+		
+		 TM1617_STB =0 ;  
         Tm1617_SendData(ModeDispTM1617); //写数据到显示寄存器
 	    TM1617_STB =1; 
 	
@@ -317,10 +278,12 @@ void SmgDisplay_DynamicTimeNum(void)
 		TM1617_STB=0;   
 		Tm1617_SendData(Addr00H);
 		//指向地址00H  
-	    Tm1617_SendData(CHAR_H_HI); //主显示3 位---百位
+	    Tm1617_SendData(segNumber[0x0a]); //主显示3 位---百位
+		  TM1617_STB=1; 
+             TM1617_STB=0; 
 	    //display address is 01H
 	    Tm1617_SendData(Addr01H);
-		Tm1617_SendData(CHAR_H_LO); //主显示3 位---百位
+		Tm1617_SendData(segNumber[0x0a]); //主显示3 位---百位
 	    TM1617_STB=1; 
 
 		
@@ -331,7 +294,8 @@ void SmgDisplay_DynamicTimeNum(void)
 			 Tm1617_SendData(Addr02H);
 			 //指向地址2   
 			 Tm1617_SendData(segNumber[0]); //主显示2位---十位
-	
+			  TM1617_STB=1; 
+             TM1617_STB=0; 
 			 //display address is 03H
 			 Tm1617_SendData(Addr03H);
 			 Tm1617_SendData(segNumber[0]); //主显示2 位---十位
@@ -343,6 +307,8 @@ void SmgDisplay_DynamicTimeNum(void)
 			 Tm1617_SendData(Addr0CH);
 			 //指向地址0CH	
 			 Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
+			   TM1617_STB=1; 
+             TM1617_STB=0; 
 				 //display address 0DH
 			 Tm1617_SendData(Addr0DH);
 			  Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
@@ -358,6 +324,8 @@ void SmgDisplay_DynamicTimeNum(void)
 			 Tm1617_SendData(Addr02H);
 			 //指向地址2   
 			 Tm1617_SendData(segNumber[1]);
+			TM1617_STB=1; 
+             TM1617_STB=0; 
 			 //display address is 03H
 			 Tm1617_SendData(Addr03H);
 			 Tm1617_SendData(segNumber[1]); //主显示2 位---十位
@@ -367,9 +335,10 @@ void SmgDisplay_DynamicTimeNum(void)
 			 //unit bit 
 			 TM1617_STB=0;	 
 			 Tm1617_SendData(Addr0CH);
-			
-				 //指向地址0CH	
-				 Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
+			//指向地址0CH	
+			Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
+				   TM1617_STB=1; 
+                   TM1617_STB=0; 
 				 //display address 0DH
 				 Tm1617_SendData(Addr0DH);
 				 Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
@@ -387,7 +356,8 @@ void SmgDisplay_DynamicTimeNum(void)
 			Tm1617_SendData(Addr02H);
 			//指向地址2   
 			Tm1617_SendData(segNumber[2]); //主显示2位---十位
-	
+			  TM1617_STB=1; 
+             TM1617_STB=0; 
 			//display address is 03H
 			Tm1617_SendData(Addr03H);
 			Tm1617_SendData(segNumber[2]); //主显示2 位---十位
@@ -399,6 +369,8 @@ void SmgDisplay_DynamicTimeNum(void)
 			Tm1617_SendData(Addr0CH);
 			//指向地址0CH  
 			Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
+			  TM1617_STB=1; 
+             TM1617_STB=0; 
 			//display address 0DH
 			Tm1617_SendData(Addr0DH);
 			Tm1617_SendData(segNumber[cmd_t.timeTotal]); //主显示1位---个位
@@ -519,3 +491,35 @@ void SmgDisplay_Single_DIG3(uint8_t num)
 
 
 }
+
+#ifdef  DEBUG_PROCESS
+void Smg_TestPro(void)
+{
+	 SmgDisplay_Numbers(0,0,0);// SmgDisplay_Numbers(1,1,1);
+	  __delay_ms(1000);
+      SmgDisplay_Numbers(1,1,1);// SmgDisplay_Numbers(1,1,1);
+	  __delay_ms(1000);
+	  SmgDisplay_Numbers(2,2,2);//SmgDisplay_Numbers(2,2,2);
+	  __delay_ms(1000);
+	 SmgDisplay_Numbers(3,3,3); // SmgDisplay_Numbers(3,3,3);
+	  __delay_ms(1000);
+	 SmgDisplay_Numbers(4,4,4);//  SmgDisplay_Numbers(4,4,4);
+	  __delay_ms(1000);
+	 SmgDisplay_Numbers(5,5,5);//   SmgDisplay_Numbers(5,5,5);
+	  __delay_ms(1000);
+	SmgDisplay_Numbers(6,6,6);//  SmgDisplay_Numbers(6,6,6);
+	  __delay_ms(1000);
+	SmgDisplay_Numbers(7,7,7);//   SmgDisplay_Numbers(7,7,7);
+	  __delay_ms(1000);
+ 
+	  SmgDisplay_Numbers(8,8,8);
+	  __delay_ms(1000);
+	  SmgDisplay_Numbers(9,9,9);
+	  __delay_ms(1000);
+	  SmgDisplay_Numbers(10,10,10);
+	  __delay_ms(1000);
+	  SmgDisplay_Numbers(0x0b,0x0b,0x0b);
+	 __delay_ms(1000);
+
+}
+#endif 

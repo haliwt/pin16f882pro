@@ -2,6 +2,8 @@
 #define  __SMG_H_
 #include "../../main.h"
 
+#define  DEBUG_PROCESS   1
+
 //extern volatile uint8_t DispData[3];//显示LED位数
 #define		BitSET(x,y)		x|=(1<<y)				//置1
 #define		BitCLR(x,y)		x&=~(1<<y)				//置0
@@ -9,12 +11,12 @@
 
 #define ModeDispTM1617      0x40 //写数据到显示寄存器
 		
-#define AddrAutoAdd		   0x40//写显示，自动累加地址  
-#define AddrFixed 		   0x44//写显示，固定地址  
+#define AddrAutoAdd        0x40//写显示，自动累加地址  
+#define AddrFixed 	    0x44//写显示，固定地址  
  
 
 #define OpenDispTM1617           	0x88//开显示
-#define CloseDisTM1617			 	0x00//关显示
+#define CloseDisTM1617		    0x00//关显示
 #define Dsip_Mode                   0x03 //显示 3位7段
  
  //Display Address 
@@ -53,6 +55,7 @@
         //
 **************************************************/
 //偶数地址，SEG1~SEG8
+//TM1629
 // #define   seg_a  0x01       //seg_a   //seg_e = 0x10  
 // #define   seg_b  0x02      //seg_b , //seg_f = 0x20
 // #define   seg_c  0x04      //seg_c , //seg_g = 0x40
@@ -60,14 +63,15 @@
 // #define   seg_e  0x10      //seg_e , //seg_c = 0x04
 // #define   seg_f  0x20      //seg_f   //seg_a = 0x01
 // #define   seg_g  0x40      //seg_g   //seg_b = 0x02 
- 
-#define   seg_a  0x10       //seg_a   //seg_e = 0x10  
-#define   seg_b  0x20      //seg_b , //seg_f = 0x20
-#define   seg_c  0x40      //seg_c , //seg_g = 0x40
-#define   seg_d  0x80      //seg_d , //seg_d = 0x08
-#define   seg_e  0x01      //seg_e , //seg_c = 0x04
-#define   seg_f  0x02     //seg_f   //seg_a = 0x01
-#define   seg_g  0x04      //seg_g   //seg_b = 0x02 
+
+//TM1617
+#define   seg_a  0x10      
+#define   seg_b  0x20     
+#define   seg_c  0x40      
+#define   seg_d  0x80      
+#define   seg_e  0x01      
+#define   seg_f  0x02      
+#define   seg_g  0x04      
 
 
 
@@ -98,5 +102,8 @@ void SetTimer_Timing(void);
 void SmgDisplay_Single_DIG1(uint8_t num);
 void SmgDisplay_Single_DIG2(uint8_t num);
 void SmgDisplay_Single_DIG3(uint8_t num);
+#ifdef DEBUG_PROCESS
+        void Smg_TestPro(void);
+#endif 
 
 #endif 

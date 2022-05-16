@@ -26,13 +26,13 @@ void DHT11_DispSmg_Value(void)
 	if(cmd_t.gCmd_dispTemperatureTask ==0){ //single alternate displsy humidity and temperature 
 		 Temp_RB1_LED  =1;      	 
          Hum_RB2_LED  =0; 
-	    SmgDisplay_Numbers(0x0A,dht11_t.Temperature_high,dht11_t.Temperature_low);
+	    SmgDisplay_Numbers(0x0b,dht11_t.Temperature_high,dht11_t.Temperature_low);
 	}
 	else{
      //Smg display Digital - humidity 
       Temp_RB1_LED  =0;      	 
       Hum_RB2_LED  =1; 
-     SmgDisplay_Numbers(0X0A, dht11_t.Humidity_high ,dht11_t.Humidify_low);
+     SmgDisplay_Numbers(0X0b, dht11_t.Humidity_high ,dht11_t.Humidify_low);
 
 	}
 

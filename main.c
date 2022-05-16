@@ -36,36 +36,12 @@ void  main(void)
 		   keyValue = KEY_Scan();
 		}
 #endif 
-      //  keyValue = KEY_Scan();
+       // keyValue = KEY_Scan();
 	//	CheckRun_Mode(keyValue);
 	//	RunCommand();
 	
-	 
-        SmgDisplay_Numbers(0,0,0);// SmgDisplay_Numbers(1,1,1);
-	  __delay_ms(1000);
-      SmgDisplay_Numbers(1,1,1);// SmgDisplay_Numbers(1,1,1);
-	  __delay_ms(1000);
-	  SmgDisplay_Numbers(2,2,2);//SmgDisplay_Numbers(2,2,2);
-	  __delay_ms(1000);
-	 SmgDisplay_Numbers(3,3,3); // SmgDisplay_Numbers(3,3,3);
-	  __delay_ms(1000);
-	 SmgDisplay_Numbers(4,4,4);//  SmgDisplay_Numbers(4,4,4);
-	  __delay_ms(1000);
-	 SmgDisplay_Numbers(5,5,5);//   SmgDisplay_Numbers(5,5,5);
-	  __delay_ms(1000);
-	SmgDisplay_Numbers(6,6,6);//  SmgDisplay_Numbers(6,6,6);
-	  __delay_ms(1000);
-	SmgDisplay_Numbers(7,7,7);//   SmgDisplay_Numbers(7,7,7);
-	  __delay_ms(1000);
- 
-	  SmgDisplay_Numbers(8,8,8);
-	  __delay_ms(1000);
-	  SmgDisplay_Numbers(9,9,9);
-	  __delay_ms(1000);
-	  SmgDisplay_Numbers(10,10,10);
-	  __delay_ms(1000);
-	  SmgDisplay_Numbers(0x0b,0x0b,0x0b);
-	 __delay_ms(1000);
+	 Smg_TestPro();
+    
 	  
 		
 	}
