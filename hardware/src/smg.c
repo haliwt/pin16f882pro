@@ -131,6 +131,8 @@ void SmgDisplay_Numbers(uint8_t num1,uint8_t num2,uint8_t num3)
 		Tm1617_SendData(Addr02H);
 	
 		Tm1617_SendData(segNumber[num2]); //主显示.DIG- 2
+		TM1617_STB=1; 
+         TM1617_STB=0; 
         //display address is 03H
 		Tm1617_SendData(Addr03H);
 		Tm1617_SendData(segNumber[num2]); //主显示.DIG - 2
@@ -142,6 +144,8 @@ void SmgDisplay_Numbers(uint8_t num1,uint8_t num2,uint8_t num3)
 		
 		//指向地址0CH  
         Tm1617_SendData(segNumber[num3] ); //主显示.DIG - 1
+		TM1617_STB=1; 
+         TM1617_STB=0; 
 		//display address 0DH
 		Tm1617_SendData(Addr0DH);
 		Tm1617_SendData(segNumber[num3] ); //主显示.DIG - 1
