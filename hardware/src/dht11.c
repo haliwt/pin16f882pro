@@ -1,78 +1,68 @@
 #include "../inc/dht11.h"
+#include <string.h>
 
 DHT11_info dht11_t;
 
+ static void DHT11_Reset(void);
+ uint8_t DHT11_IsOnLine(void);
+
+static uint8_t getIndexOfStings(uint8_t  ch);
 
 void DHT11_Init(void)
 {
-    TRISAbits.TRISA5 = 1 ; //gpio as input port
+     DHT11_Reset();
+ 
+}
+//reset DHT11
 
 
+
+
+
+
+void DHT11_DispSmg_TemperatureValue(void)
+{
+     static uint8_t temp0,temp1;
+
+     temp0= dht11_t.Temperature /10;
+     temp1 = dht11_t.Temperature % 10;
+
+   Temp_RB1_LED  =1;      	 
+         Hum_RB2_LED  =0; 
+	    SmgDisplay_Numbers(0x0b,temp0,temp1);
+	
+   
 }
 
-
-
-void DHT11_DispSmg_Value(void)
+void DHT11_DispSmg_HumidityValue(void)
 {
+     static uint8_t temp0,temp1;
 
-    dht11_t.Humidity_high  = DHT11ReadBuyte();
-    dht11_t.Humidify_low   = DHT11ReadBuyte();
+    
 
-    dht11_t.Temperature_high = DHT11ReadBuyte();
-    dht11_t.Temperature_low   =  DHT11ReadBuyte();
+     temp0= dht11_t.Humidity / 10;
+     temp1 = dht11_t.Humidity % 10;
 
+   
 
-	//Smg display Digital -Temp
-	if(cmd_t.gCmd_dispTemperatureTask ==0){ //single alternate displsy humidity and temperature 
-		 Temp_RB1_LED  =1;      	 
-         Hum_RB2_LED  =0; 
-	    SmgDisplay_Numbers(0x0b,dht11_t.Temperature_high,dht11_t.Temperature_low);
-	}
-	else{
      //Smg display Digital - humidity 
       Temp_RB1_LED  =0;      	 
       Hum_RB2_LED  =1; 
-     SmgDisplay_Numbers(0X0b, dht11_t.Humidity_high ,dht11_t.Humidify_low);
+     SmgDisplay_Numbers(0X0b, temp0 ,temp0);
 
-	}
-
-}
-
-uint8_t DHT11ReadBuyte(void)
-{
-    uint8_t j=0;
-    uint8_t i,datCode;
-
-    for(i=0;i<8;i++){
-
-        datCode <<=1;
-        j=0;
-
-        while((!DHT11_DATA_BIT()) && (j<250)){
-
-            j++;
-            
-        }
-        __delay_us(10);
-        __delay_us(10);
-        __delay_us(10);
-        __delay_us(10);
-        if(DHT11_DATA_BIT()){
-
-             datCode |= 0x01;
-             j=0;
-             while((DHT11_DATA_BIT()) &&(j<250)){
-
-                 j++;
-             }
-        }
-    }
-
-    return datCode;
-
-
+	
 
 }
+
+//读取一个字节
+
+
+
+
+
+
+
+
 
 void Temperature_AddValue(void)
 {
@@ -118,6 +108,175 @@ void Time_DecValue(void)
 
 
 }
+/**
+ * @brief 
+ * 
+ */
+
+uint8_t hexToDec(uint8_t *source)
+{
+	uint8_t sum=0;
+	uint8_t t=1;
+	uint8_t i,len;
+	
+	len = strlen(source);
+	for(i=len-1;i>=0;i--)
+	{
+		sum += t*getIndexOfStings(*(source+i));
+		t *=16;
+	}
+	return sum;
+}
+
+
+static uint8_t getIndexOfStings(uint8_t ch)
+{
+	if(ch >='0' && ch<='9')
+	{
+		return ch- '0';
+	}
+	
+	if(ch >='A' && ch<='F')
+	{
+		return ch- 'A'+10;
+	}
+	
+	if(ch >='a' && ch<='f')
+	{
+		return ch- 'a'+10;
+	}
+	
+}
+
+
+
+/**
+ * @brief  
+ * 
+ */
+
+
+static void DHT11_Reset(void)
+{
+	TRISAbits.TRISA5 =0;
+	DHT11_DQ_DATA =0 ;    //A
+    __delay_ms(20);
+	DHT11_DQ_DATA=1; //C
+	__delay_us(30); //40 <data<100us
+
+	
+}
+
+//等待DHT11的回应
+//返回1:未检测到DHT11的存在
+//返回0:存在  
+uint8_t DHT11_IsOnLine(void)
+{
+      uint8_t retry =0;
+	  TRISAbits.TRISA5 =1;
+
+	  while(DHT11_DQ_DATA && retry <100)//dq pull down low 40~80us
+	  {
+		  retry ++;
+		  __delay_us(1);
+	  }
+
+	  if(retry >=100){
+		  return 1;
+	  }
+	  else{
+		  retry =0;
+	  }
+
+	  while(!DHT11_DQ_DATA && retry <100) // dq pull up again  40~80us
+	  {
+		  retry ++;
+		  __delay_us(1);
+	  }
+
+	  if(retry >=100){
+		  return 1;
+	  }
+	  return 0;
+
+}
+
+
+uint8_t DHT11_ReadBit(void) 			 
+{
+ 	uint8_t retry = 0;
+	while(DHT11_DQ_DATA && retry < 100)
+	{
+		retry ++;
+		__delay_us(1);
+	}
+	retry = 0;
+	while(!DHT11_DQ_DATA && retry < 100)
+	{
+		retry ++;
+		__delay_us(1);
+	}
+	
+	__delay_us(40);//等待40us
+	
+	if(DHT11_DQ_DATA)
+	{
+		return 1;
+	}
+	else 
+	{
+		return 0;	
+	}		
+}
+
+uint8_t DHT11_ReadByte(void)    
+{        
+    uint8_t i,dat;
+    dat = 0;
+	for (i = 0; i < 8; i ++) 
+	{
+   		dat <<= 1; 
+	    dat |= DHT11_ReadBit();
+    }						    
+    return dat;
+}
+
+//从DHT11读取一次数据
+//temp:温度值(范围:0~50°)
+//humi:湿度值(范围:20%~90%)
+//返回值：0,正常;1,读取失败
+uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)    
+{        
+ 	uint8_t buf[5];
+	uint8_t i;
+	
+	DHT11_Reset();
+	
+	if(DHT11_IsOnLine() == 0)
+	{
+		for(i = 0; i < 5; i ++)//读取40位数据
+		{
+			buf[i] = DHT11_ReadByte();
+		}
+		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
+		{
+			*humi = buf[0];
+			*temp = buf[2];
+			
+		}
+	}
+	else 
+	{
+		*humi = 0x30;
+		*temp = 0x58;
+		return 1;
+	}
+	
+	return 0;	    
+}
+
+
+
 
 
 

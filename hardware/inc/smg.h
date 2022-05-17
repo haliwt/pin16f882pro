@@ -2,7 +2,7 @@
 #define  __SMG_H_
 #include "../../main.h"
 
-#define  DEBUG_PROCESS   1
+//#define  DEBUG_PROCESS   1
 
 //extern volatile uint8_t DispData[3];//显示LED位数
 #define		BitSET(x,y)		x|=(1<<y)				//置1
