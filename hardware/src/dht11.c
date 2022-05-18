@@ -298,19 +298,19 @@ uint8_t dht11_read_byte(uint8_t *byte)
     for (i = 0; i < 8; i++)
     {
         timeout = 100;  
-        while (DHT11_DQ_DATA && timeout)   /* 等待变为低电平 */
+        while ((DHT11_DQ_DATA==1) && timeout)   /* 等待变为低电平 */
         {
             __delay_us(1);
             --timeout;
         }
-        if (!timeout) 
-        {
+       // if (!timeout) 
+       // {
             //printk("timeout %d\n", __LINE__);         
-            return 0;           /* 超时 */
-        }
+         //   return 0;           /* 超时 */
+      //  }
 
-        timeout = 1000;
-        while (!DHT11_DQ_DATA && timeout)    /* 等待变为高电平 */
+        timeout = 100;
+        while ((DHT11_DQ_DATA==0) && timeout)    /* 等待变为高电平 */
         {
             __delay_us(1);
             --timeout;
@@ -318,7 +318,7 @@ uint8_t dht11_read_byte(uint8_t *byte)
         if (!timeout) 
         {
            // printk("timeout %d\n", __LINE__);
-            return 0;           /* 超时 */
+           return 0;           /* 超时 */
         }
         __delay_us(40);
         
@@ -329,10 +329,10 @@ uint8_t dht11_read_byte(uint8_t *byte)
 		{
 			data |= 0x01;
 		} 
-        *byte = data;
-        return 0;
+      
 	}
-		
+	  *byte = data;
+        return 0;	
 		
 	
 }
