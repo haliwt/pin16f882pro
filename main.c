@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue,temp0,i;
-	uint8_t  vt[2],vh[2],data[5];
+    uint8_t keyValue,temp0,temp1,i,j;
+	uint8_t  vt[3],vh[3],data[5];
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -52,8 +52,10 @@ void  main(void)
     /* ??5???? */
     for (i = 0; i < 5; i++)    
     {
-       //data[i]= DHT11_One_ReadByte();
-       dht11_read_byte(&temp0);
+      
+        //data[i]= DHT11_One_ReadByte();
+       
+        dht11_read_byte(&data[i]);
         
     }
    if (data[4] == (data[0]+data[1]+data[2]+data[3]))
@@ -67,12 +69,20 @@ void  main(void)
 	// vt[0] = temp0 / 10 ;
 	// vt[1] = temp0 % 10;
   // temp0 = data[2];
+    
+     temp0 = data[0];
    	 vt[0] = (temp0 /10)%10;
 	 vt[1] = temp0 %10;
-     vh[0] = (temp0/100)%10;
-    SmgDisplay_Numbers(vh[0],vt[0],vt[1]);
-    
-	 
+     vt[2] = (temp0/100)%10;
+  
+    SmgDisplay_Numbers(vt[2],vt[0],vt[1]);
+    __delay_ms(500);
+     temp1 = data[2];
+   	 vh[0] = (temp1 /10)%10;
+	 vh[1] = temp1 %10;
+     vh[2] = (temp1/100)%10;
+     SmgDisplay_Numbers(vh[2],vh[0],vh[1]);
+	 __delay_ms(500);
 		
 	}
     
