@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue,temp0,temp1,i,j;
-	uint8_t  vt[3],vh[3],data[5];
+    uint8_t keyValue,temp0,temp1,temp2,temp3,i,j;
+	uint8_t  vt[3],vh[3],vt0[3],vh0[3],data[5];
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -74,14 +74,31 @@ void  main(void)
    	 vt[0] = (temp0 /10)%10;
 	 vt[1] = temp0 %10;
      vt[2] = (temp0/100)%10;
-  
     SmgDisplay_Numbers(vt[2],vt[0],vt[1]);
     __delay_ms(500);
+    
+     temp2 = data[1];
+   	 vt0[0] = (temp2 /10)%10;
+	 vt0[1] = temp2 %10;
+     vt0[2] = (temp2/100)%10;
+    SmgDisplay_Numbers(vt0[2],vt0[0],vt0[1]);
+    __delay_ms(500);
+    
+     
+    
+    
      temp1 = data[2];
    	 vh[0] = (temp1 /10)%10;
 	 vh[1] = temp1 %10;
      vh[2] = (temp1/100)%10;
      SmgDisplay_Numbers(vh[2],vh[0],vh[1]);
+	 __delay_ms(500);
+     
+      temp3 = data[3];
+   	 vh0[0] = (temp3 /10)%10;
+	 vh0[1] = temp3 %10;
+     vh0[2] = (temp3/100)%10;
+     SmgDisplay_Numbers(vh0[2],vh0[0],vh0[1]);
 	 __delay_ms(500);
 		
 	}

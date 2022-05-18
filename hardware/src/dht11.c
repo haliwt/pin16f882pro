@@ -199,7 +199,7 @@ uint8_t DHT11_ReadBit(void)
 		retry ++;
 		__delay_us(1);
 	}
-	__delay_us(40);
+	__delay_us(30);
 
     if(DHT11_DQ_DATA==1){
 		
@@ -305,11 +305,11 @@ uint8_t dht11_read_byte(uint8_t *byte)
         }
         if (!timeout) 
         {
-           // printk("timeout %d\n", __LINE__);         
+            //printk("timeout %d\n", __LINE__);         
             return 0;           /* 超时 */
         }
 
-        timeout = 100;
+        timeout = 1000;
         while (!DHT11_DQ_DATA && timeout)    /* 等待变为高电平 */
         {
             __delay_us(1);
