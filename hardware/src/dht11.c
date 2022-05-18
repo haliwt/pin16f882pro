@@ -155,7 +155,7 @@ uint8_t DHT11_IsOnLine(void)
 		  retry ++;
 		  __delay_us(1);
 	  }
-	  if(retry >=1000){
+	  if(retry > 100){ // if(retry >=1000){
 		  return 1;
 	   }
 	   retry = 0;
