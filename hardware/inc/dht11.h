@@ -25,7 +25,7 @@ extern DHT11_info dht11_t;
 
 void DHT11_Init(void);
 
-
+ void DHT11_Reset(void);
 
 
 
@@ -43,8 +43,10 @@ void DHT11_DispSmg_HumidityValue(void);
 void DHT11_DispSmg_TemperatureValue(void);
 
 uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)  ;
-uint8_t hexToDec(uint8_t *source);
 
-uint8_t trans(uint8_t *p);
+
+uint8_t dht11_read_byte(uint8_t *byte);
+
+uint8_t DHT11_IsOnLine(void);
 
 #endif 

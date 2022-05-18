@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue,temp0,temp1,vtemp,valueT,temp2,temp3;
-	uint8_t  vt[1],vh[1],vdec[1];
+    uint8_t keyValue;
+	uint8_t  vt[1],vh[1];
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -49,16 +49,13 @@ void  main(void)
 
    
 
-       
-	
-	 DHT11_Read_Data(vt,vh)  ;
-   
      
-	 
+	 DHT11_Read_Data(vt,vh);
 	
-	 SmgDisplay_Numbers(0x0b,vt[0]/10,vt[0]%10);
+   
+    SmgDisplay_Numbers(vt[0],vt[0]/10,vt[0]%10);
     
-	
+	 
 		
 	}
     
