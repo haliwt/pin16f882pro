@@ -330,7 +330,7 @@ uint8_t dht11_read_byte(uint8_t *byte)
 			data |= 0x01;
 		} 
         *byte = data;
-       // return 0;
+        return 0;
 	}
 		
 		
