@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue;
-	uint8_t  vt[1],vh[1];
+    uint8_t keyValue,temp0,temp1;
+	uint8_t  vt[2],vh[2];
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -47,13 +47,15 @@ void  main(void)
 	//__delay_ms(500);
 	//__delay_ms(500);
 
-   
-
-     
-	 DHT11_Read_Data(vt,vh);
-	
-   
-    SmgDisplay_Numbers(vt[0],vt[0]/10,vt[0]%10);
+   DHT11_Reset();
+   DHT11_IsOnLine();
+    dht11_read_byte(&temp0);
+	 //DHT11_Read_Data(&temp0,vh);
+	 
+	 vt[0] = temp0 / 100 ;
+	 vt[1] = temp0 % 10;
+     vh[0] = temp0/255;
+    SmgDisplay_Numbers(vh[0],vt[0],vt[1]);
     
 	 
 		

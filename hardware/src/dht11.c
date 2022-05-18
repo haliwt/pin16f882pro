@@ -185,7 +185,7 @@ uint8_t DHT11_IsOnLine(void)
 ************************************************************************/
 uint8_t DHT11_ReadBit(void) 			 
 {
- 	uint8_t retry = 0,bit;
+ 	 uint8_t retry = 0;
 	while((DHT11_DQ_DATA==1) && retry < 100) //等待变成低电平
 	{
 		retry ++;
@@ -198,15 +198,14 @@ uint8_t DHT11_ReadBit(void)
 		retry ++;
 		__delay_us(1);
 	}
-	
-   __delay_us(40);
+	__delay_us(40);
 
-    bit = DHT11_DQ_DATA;
-
-	if(bit){
+    if(DHT11_DQ_DATA==1){
+		
 		return 1;
 	}
 	else{
+		
 		return 0;
 	}
 
