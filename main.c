@@ -44,17 +44,17 @@ void  main(void)
 
        
   
-	//__delay_ms(500);
-	//__delay_ms(500);
+	__delay_ms(500);
+	__delay_ms(500);
 
    DHT11_Reset();
    DHT11_IsOnLine();
     dht11_read_byte(&temp0);
 	 //DHT11_Read_Data(&temp0,vh);
-	 
-	 vt[0] = temp0 / 100 ;
-	 vt[1] = temp0 % 10;
-     vh[0] = temp0/255;
+   // temp0 = 0x26;
+	 vt[0] = (temp0 /10)%10;
+	 vt[1] = temp0 %10;
+     vh[0] = (temp0/100)%10;
     SmgDisplay_Numbers(vh[0],vt[0],vt[1]);
     
 	 
