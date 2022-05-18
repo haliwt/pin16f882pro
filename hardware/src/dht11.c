@@ -185,7 +185,8 @@ uint8_t DHT11_IsOnLine(void)
 ************************************************************************/
 uint8_t DHT11_ReadBit(void) 			 
 {
- 	 uint8_t retry = 0;
+ 	 uint8_t retry; 
+	retry = 0;
 	while((DHT11_DQ_DATA==1) && retry < 100) //等待变成低电平
 	{
 		retry ++;
@@ -241,7 +242,7 @@ uint8_t DHT11_ReadByte(void)
     dat = 0;
 	for (i = 0; i < 8; i ++) 
 	{
-   		dat <<= 1; 
+   		dat = dat << 1; 
 	    dat |= DHT11_ReadBit() ;
     }						    
     return dat;
@@ -262,7 +263,7 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	{
 		for(i = 0; i < 5; i ++)//读取40位数据
 		{
-			buf[i] =DHT11_ReadBit() ;
+			buf[i] =DHT11_One_ReadByte();//DHT11_ReadByte();
 		}
 		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
 		{
@@ -296,7 +297,7 @@ uint8_t dht11_read_byte(uint8_t *byte)
     
     for (i = 0; i < 8; i++)
     {
-        timeout = 1000;  
+        timeout = 100;  
         while (DHT11_DQ_DATA && timeout)   /* 等待变为低电平 */
         {
             __delay_us(1);
@@ -308,7 +309,7 @@ uint8_t dht11_read_byte(uint8_t *byte)
             return 0;           /* 超时 */
         }
 
-        timeout = 1000;
+        timeout = 100;
         while (!DHT11_DQ_DATA && timeout)    /* 等待变为高电平 */
         {
             __delay_us(1);
@@ -328,11 +329,60 @@ uint8_t dht11_read_byte(uint8_t *byte)
 		{
 			data |= 0x01;
 		} 
-
-		*byte = data;
-		return 0;
+        *byte = data;
+       // return 0;
 	}
-   
+		
+		
+	
+}
+
+
+/**
+	* @brief DHT11 读取字节
+	*/
+uint8_t DHT11_One_ReadByte(void)
+{
+	uint8_t j,retry=0,data;
+	for(j=0;j<8;j++)
+	{
+		while((DHT11_DQ_DATA==0) && retry <100)//等待拉高
+		{
+			__delay_us(1);
+			retry++;
+		}
+		if(retry>= 100)
+		{
+		
+			retry = 0;
+			return 0 ;
+		}else{
+			retry = 0;
+		}
+		
+		__delay_us(40);
+		if(DHT11_DQ_DATA==0)
+		{
+			data &= ~(1<<(7-j));
+		}
+        else{
+			data |= 1<<(7-j);
+			while((DHT11_DQ_DATA==1) && retry <100)//等待拉低
+			{
+				__delay_us(1);
+				retry++;
+			}
+			if(retry>= 100)
+			{
+				//printf("time out5\r\n");
+				retry = 0;
+				return 0;
+			}else{
+				retry = 0;
+			}
+		}
+	}
+	return data;
 }
 
 

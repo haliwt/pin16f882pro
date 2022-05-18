@@ -49,4 +49,6 @@ uint8_t dht11_read_byte(uint8_t *byte);
 
 uint8_t DHT11_IsOnLine(void);
 
+uint8_t DHT11_One_ReadByte(void);
+
 #endif 

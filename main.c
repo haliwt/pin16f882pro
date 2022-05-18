@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue,temp0,temp1;
-	uint8_t  vt[2],vh[2];
+    uint8_t keyValue,temp0,i;
+	uint8_t  vt[2],vh[2],data[5];
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -46,13 +46,28 @@ void  main(void)
   
 	__delay_ms(500);
 	__delay_ms(500);
-
+#if 1
    DHT11_Reset();
    DHT11_IsOnLine();
-    dht11_read_byte(&temp0);
-	 //DHT11_Read_Data(&temp0,vh);
-   // temp0 = 0x26;
-	 vt[0] = (temp0 /10)%10;
+    /* ??5???? */
+    for (i = 0; i < 5; i++)    
+    {
+       //data[i]= DHT11_One_ReadByte();
+       dht11_read_byte(&temp0);
+        
+    }
+   if (data[4] == (data[0]+data[1]+data[2]+data[3]))
+    {
+       Breath_RA0_LED  =1;
+    }
+#endif 
+
+	// DHT11_Read_Data(vt,vh);
+	// vh[0] = temp0/100;
+	// vt[0] = temp0 / 10 ;
+	// vt[1] = temp0 % 10;
+  // temp0 = data[2];
+   	 vt[0] = (temp0 /10)%10;
 	 vt[1] = temp0 %10;
      vh[0] = (temp0/100)%10;
     SmgDisplay_Numbers(vh[0],vt[0],vt[1]);
