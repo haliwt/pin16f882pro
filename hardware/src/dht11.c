@@ -145,7 +145,7 @@ uint8_t DHT11_IsOnLine(void)
 			__delay_us(1);
 		}
 	  
-	  if(retry >=40){
+	  if(retry >=100){
 		  return 1;
 	   }
 	 
@@ -242,8 +242,8 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	{
 		for(i = 0; i < 5; i ++)//读取40位数据
 		{
-			buf[i] =DHT11_Read_One_Byte();//DHT11_One_ReadByte();//DHT11_ReadByte();
-			//dht11_read_byte(&buf[i]);
+			//buf[i] =DHT11_Read_One_Byte();//DHT11_One_ReadByte();//DHT11_ReadByte();
+			dht11_read_byte(&buf[i]);
 		
 		}
 		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
@@ -251,6 +251,7 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 			*humi = buf[0];
 			*temp = buf[2];
 			Breath_RA0_LED =1;
+            return 1;
 		}
 	}
 	else 
@@ -259,7 +260,7 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 		*temp = 0xff;
 		TIMEER_RA1_LED =1;
 		Breath_RA0_LED =0;
-		return 1;
+		return 0;
 	}
 	
 	return 0;	    
@@ -280,7 +281,7 @@ uint8_t dht11_read_byte(uint8_t *byte)
     TRISAbits.TRISA5 =1;
     for (i = 0; i < 8; i++)
     {
-        timeout = 100;  
+        timeout = 55;  
         while (DHT11_DQ_DATA==1 && timeout) ;  /* 等待变为低电平 */
         {
            NOP(); //__delay_us(1);
@@ -303,8 +304,10 @@ uint8_t dht11_read_byte(uint8_t *byte)
            // printk("timeout %d\n", __LINE__);
            return 0;           /* 超时 */
         }
-        __delay_us(40); //level high  of time
-	
+       // __delay_us(40); //level high  of time
+	    Delay_10us();
+		 Delay_10us();
+		  Delay_10us();
         
       //  bit = DHT11_DQ_DATA;
 
@@ -394,21 +397,21 @@ uint8_t DHT11_Read_One_Byte(void)
 {
   uint8_t data = 0;
   uint8_t i,count=0;
-        uint8_t timeout=0;       
-
+  uint16_t timeout=0;       
+   TRISAbits.TRISA5 =1;
         for(i=0;i<8;i++)
         {
-                timeout=0;
-                while(!DHT11_DQ_DATA && timeout < 100)    // 输出位头，低电平
+                timeout=54;
+                while((DHT11_DQ_RA5() ==0) && timeout )    // 输出位头，低电平
                 {
                         NOP();//__delay_us(1);       
-                        timeout++;
+                        timeout--;
                 }
-                timeout=0;
-                while(DHT11_DQ_DATA && timeout < 100) //等待低电平
+                timeout=75;
+                while((DHT11_DQ_RA5() ==1) && timeout ) //等待低电平
                 {
                         NOP();//__delay_us(1);
-                        timeout++;
+                        timeout--;
                         count++;
                 }
                 data <<= 1;                    // 先移位

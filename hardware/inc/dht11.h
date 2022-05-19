@@ -5,6 +5,7 @@
 
 #define DHT11_DQ_IN          PORTAbits.RA5
 #define DHT11_DQ_DATA                  PORTAbits.RA5 
+#define DHT11_DQ_RA5()     (PORTAbits.RA5)
 
 uint8_t  dht_dat[5];    //存储读取的温湿度信息
 
