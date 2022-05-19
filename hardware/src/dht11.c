@@ -393,7 +393,7 @@ uint8_t DHT11_One_ReadByte(void)
 
 
 
-uint8_t DHT11_Read_One_Byte(void)
+uint8_t DHT11_Read_One_Byte(uint8_t *pdata)
 {
   uint8_t data = 0;
   uint8_t i,count=0;
@@ -401,19 +401,39 @@ uint8_t DHT11_Read_One_Byte(void)
    TRISAbits.TRISA5 =1;
         for(i=0;i<8;i++)
         {
-                timeout=54;
+                  timeout = 55;  
+				while (DHT11_DQ_DATA==1 && timeout) ;  /* 等待变为低电平 */
+				{
+				//NOP(); 
+				__delay_us(1);
+					--timeout;
+				}
+				
+				timeout=1000;
                 while((DHT11_DQ_RA5() ==0) && timeout )    // 输出位头，低电平
                 {
-                        NOP();//__delay_us(1);       
-                        timeout--;
+                        //NOP();//
+						__delay_us(1);       
+                        --timeout;
                 }
-                timeout=75;
+				 if (!timeout) 
+				{
+				// printk("timeout %d\n", __LINE__);
+				return 0;           /* 超时 */
+				}
+                timeout=1000;
                 while((DHT11_DQ_RA5() ==1) && timeout ) //等待低电平
                 {
-                        NOP();//__delay_us(1);
-                        timeout--;
+                       // NOP();
+						__delay_us(1);
+                        --timeout;
                         count++;
                 }
+				if (!timeout) 
+				{
+				// printk("timeout %d\n", __LINE__);
+				        return 0;           /* 超时 */
+				}
                 data <<= 1;                    // 先移位
                 if(count > 30)                // 大于30uS的为 1
                 {
@@ -422,5 +442,6 @@ uint8_t DHT11_Read_One_Byte(void)
                 count = 0;
         }
         //printf("DHT11 Reader Value = 0x%02X\r\n",data);
-        return data;
+		*pdata = data;
+        return 1;
 }

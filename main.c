@@ -50,13 +50,21 @@ void  main(void)
    DHT11_Reset();
    //DHT11_IsOnLine();
     if(DHT11_IsOnLine()==0){
-    for (i = 0; i < 5; i++)    
+   // for (i = 0; i < 5; i++)    
     {
       
-        data[i]= DHT11_Read_One_Byte();
+        DHT11_Read_One_Byte(&data[0]);
+        DHT11_Read_One_Byte(&data[1]);
+         DHT11_Read_One_Byte(&data[2]);
+          DHT11_Read_One_Byte(&data[3]);
+          DHT11_Read_One_Byte(&data[4]);
        //data[i] =DHT11_ReadByte() ;  
        //data[i] = Read_Byte(); 
-       //dht11_read_byte(&data[i]);
+    //    dht11_read_byte(&data[0]);
+    //     dht11_read_byte(&data[1]);
+    //      dht11_read_byte(&data[2]);
+    //       dht11_read_byte(&data[3]);
+    //        dht11_read_byte(&data[4]);
      
    
         
@@ -66,14 +74,14 @@ void  main(void)
     {
        Breath_RA0_LED  =1;
     }
-    }
+   }
 #endif 
 
 	//Read_DHT11();
     //data[0]=0x2e;
    // DHT11_Read_Data(&temp0,&temp1)    ;
     //if(DHT11_Read_Data(&temp0,&temp1) ==1){
- //   temp0 = data[0];
+     temp0 = data[0];
    	vt[0] = (temp0 /10)%10;
 	vt[1] = temp0 %10;
     vt[2] = (temp0/100)%10;
