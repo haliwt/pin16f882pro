@@ -4,7 +4,7 @@
 DHT11_info dht11_t;
 
 
-
+uint8_t DHT11_ReadBit(uint8_t *pdat) ;
 
  void  Delay_10us(void);
 
@@ -139,33 +139,36 @@ uint8_t DHT11_IsOnLine(void)
 {
      uint8_t retry =0;
 	TRISAbits.TRISA5 =1;
-    while((DHT11_DQ_DATA==1) && retry < 40)//dq pull down low 40~80us
+	retry = 40;
+    while((DHT11_DQ_DATA==1) && retry )//dq pull down low 40~80us
 		{
-			retry ++;
 			__delay_us(1);
+			retry --;
 		}
 	  
-	  if(retry >=40){
+	  if(!retry){
 		  return 1;
 	   }
 	 
-		retry =0;
-	  while((DHT11_DQ_DATA==0) && retry <100 )// dq pull up again  40~80us
+		retry =100;
+	  while((DHT11_DQ_DATA==0) && retry  )// dq pull up again  40~80us
 	  {
-		  retry ++;
+		 
 		  __delay_us(1);
+		  retry --;
 	  }
-	  if(retry > 100){ // if(retry >=1000){
+	  if(!retry){ // if(retry >=1000){
 		  return 1;
 	   }
-	   retry = 0;
+	   retry = 100;
 
-	   while((DHT11_DQ_DATA==1) && retry < 100)// wait high level 
+	   while((DHT11_DQ_DATA==1) && retry )// wait high level 
 	   {
-		    retry ++;
+		  
 		  __delay_us(1);
+		  retry --;
 	   }
-	  if(retry >=100){
+	  if(!retry){
 		  return 1;
 	   }
 	   
@@ -183,33 +186,51 @@ uint8_t DHT11_IsOnLine(void)
 
 /************************************************************************
 ************************************************************************/
-uint8_t DHT11_ReadBit(void) 			 
+uint8_t DHT11_ReadBit(uint8_t *pdat) 			 
 {
- 	uint8_t retry; 
-	retry = 0;
-	while((DHT11_DQ_DATA==1) && retry < 100) //等待变成低电平
-	{
-		retry ++;
-		__delay_us(1);
-	}
-	retry = 0;
+ 	 int retry;
+	 uint8_t i,dat; 
+	for(i=0;i<8;i++){
 
-	while((DHT11_DQ_DATA==0) && retry < 100)// 等待变成高电平
-	{
-		retry ++;
-		__delay_us(1);
-	}
-	__delay_us(40);
+		retry = 100;
+		while(DHT11_DQ_DATA==1 && retry ); //&& retry < 100) //等待变成低电平
+		{
+			__delay_us(1);
+			retry --;
+		}
+		if (!retry) 
+        {
+            //printk("timeout %d\n", __LINE__);         
+            return 0;           /* 超时 */
+        }
+		retry =100;
 
-    if(DHT11_DQ_DATA==1){
+		while((DHT11_DQ_DATA==0) && retry )// 等待变成高电平
+		{
 		
-		return 1;
-	}
-	else{
-		
-		return 0;
-	}
+			__delay_us(1);
+			retry --;
+		}
+		if (!retry) 
+        {
+            //printk("timeout %d\n", __LINE__);         
+            return 0;           /* 超时 */
+        }
+		__delay_us(40);
+		dat = dat << 1; 
 
+		if(DHT11_DQ_DATA==1){
+			
+			dat |=0x01;
+			//return 1;
+		}
+		else{
+			dat |= 0x0;
+			//return 0;
+		}
+	}
+	*pdat = dat;
+    return dat;
     
 }
 
@@ -222,7 +243,7 @@ uint8_t DHT11_ReadByte(void)
 	for (i = 0; i < 8; i ++) 
 	{
    		dat = dat << 1; 
-	    dat |= DHT11_ReadBit() ;
+	   // dat |= DHT11_ReadBit() ;
     }			    
     return dat;
 }
@@ -240,12 +261,10 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	
 	if(DHT11_IsOnLine() == 0) 
 	{
-		//for(i = 0; i < 5; i ++)//读取40位数据
+		for(i = 0; i < 5; i ++)//读取40位数据
 		{
-			//buf[i] =DHT11_One_ReadByte();//DHT11_ReadByte();
-			dht11_read_byte(&buf[0]);
-			SmgDisplay_Numbers(buf[0] ,buf[0] /10,buf[0] %10);		
-			__delay_ms(500);
+		    buf[i]	=DHT11_ReadBit(&vr) ;	//DHT11_ReadByte();
+		   // dht11_read_byte(&buf[i]);
 		}
 		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
 		{
@@ -279,22 +298,22 @@ uint8_t dht11_read_byte(uint8_t *byte)
     
     for (i = 0; i < 8; i++)
     {
-        //timeout = 1000;  
-        while (DHT11_DQ_DATA==1) ;  /* 等待变为低电平 */
-        // {
-        //    NOP(); //__delay_us(1);
-        //     --timeout;
-        // }
-        // if (!timeout) 
-        // {
-        //     //printk("timeout %d\n", __LINE__);         
-        //     return 0;           /* 超时 */
-        // }
+        timeout = 1000;  
+        while (DHT11_DQ_DATA==1 && timeout) ;  /* 等待变为低电平 */
+        {
+           NOP(); //__delay_us(1);
+            --timeout;
+        }
+        if (!timeout) 
+        {
+            //printk("timeout %d\n", __LINE__);         
+            return 0;           /* 超时 */
+        }
 
-        timeout = 80;
+        timeout = 100;
         while ((DHT11_DQ_DATA==0) && timeout)    /* 等待变为高电平 */
         {
-             __delay_us(1);
+            NOP();// __delay_us(1);
             --timeout;
         }
         if (!timeout) 
@@ -302,18 +321,21 @@ uint8_t dht11_read_byte(uint8_t *byte)
            // printk("timeout %d\n", __LINE__);
            return 0;           /* 超时 */
         }
-        __delay_us(40); //level high  of time
-	
+        //__delay_us(40); //level high  of time
+	    Delay_10us();
+		Delay_10us();
+		Delay_10us();
         
-      //  bit = DHT11_DQ_DATA;
-
-        //dht11_t.data<<=1;
-		data <<= 1;            
-        if (DHT11_DQ_DATA==1)
+        bit = DHT11_DQ_DATA;
+		data = data << 1;            
+        if (bit)
 		{
 			//dht11_t.data |= 0x01; 
 			data |= 0x01;
 		} 
+		else{
+			data |= 0x00;
+		}
      //  *byte = data;
 	}
 	  *byte = data;
