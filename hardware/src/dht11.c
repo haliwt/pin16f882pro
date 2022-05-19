@@ -6,7 +6,7 @@ DHT11_info dht11_t;
 
 uint8_t DHT11ReadByte(void);
 
-
+ void  Delay_10us(void);
 
 void DHT11_Init(void)
 {
@@ -297,22 +297,22 @@ uint8_t dht11_read_byte(uint8_t *byte)
     
     for (i = 0; i < 8; i++)
     {
-        timeout = 100;  
+        timeout = 1000;  
         while ((DHT11_DQ_DATA==1) && timeout)   /* 等待变为低电平 */
         {
-            __delay_us(1);
+           NOP(); //__delay_us(1);
             --timeout;
         }
-       // if (!timeout) 
-       // {
+        if (!timeout) 
+        {
             //printk("timeout %d\n", __LINE__);         
-         //   return 0;           /* 超时 */
-      //  }
+            return 0;           /* 超时 */
+        }
 
-        timeout = 100;
+        timeout = 1000;
         while ((DHT11_DQ_DATA==0) && timeout)    /* 等待变为高电平 */
         {
-            __delay_us(1);
+           NOP();// __delay_us(1);
             --timeout;
         }
         if (!timeout) 
@@ -320,13 +320,18 @@ uint8_t dht11_read_byte(uint8_t *byte)
            // printk("timeout %d\n", __LINE__);
            return 0;           /* 超时 */
         }
-        __delay_us(40);
+        //__delay_us(30);//__delay_us(40);
+		Delay_10us();
+		Delay_10us();
+		Delay_10us();
         
         bit = DHT11_DQ_DATA;
 
-        data <<= 1;            
+        //dht11_t.data<<=1;
+		data <<= 1;            
         if (bit)
 		{
+			//dht11_t.data |= 0x01; 
 			data |= 0x01;
 		} 
       
@@ -388,5 +393,18 @@ uint8_t DHT11_One_ReadByte(void)
 
 
 
+ void  Delay_10us(void)
+{
+    NOP();
+     NOP();
+	 NOP();
+	  NOP();
+     NOP();
+	 NOP();
+	  NOP();
+     NOP();
+	 NOP();
+    NOP();   
+}
 
 

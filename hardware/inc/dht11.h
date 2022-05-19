@@ -16,7 +16,7 @@ typedef struct _DHT11_{
     unsigned char Humidity;
     unsigned char Temperature;
    
-    unsigned char DHT11_CAC;
+    unsigned char data;
 
 
 }DHT11_info;
