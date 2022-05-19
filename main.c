@@ -14,8 +14,8 @@
 void  main(void) 
 {
       
-    uint8_t keyValue,temp0,temp1,temp2,temp3,i,j;
-	uint8_t  vt[3],vh[3],vt0[3],vh0[3],data[5];
+    uint8_t keyValue,temp0,temp1,temp2,temp3,temp4,i;
+	uint8_t  vt[3],vh[3],vt0[3],vh0[3],vhl0[3],data[5],vr;
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
@@ -46,18 +46,18 @@ void  main(void)
   
 	//__delay_ms(500);
 	//__delay_ms(500);
-#if 1
+#if 0
    DHT11_Reset();
    //DHT11_IsOnLine();
     if(DHT11_IsOnLine()==0){
    // for (i = 0; i < 5; i++)    
     {
       
-        DHT11_Read_One_Byte(&data[0]);
+       DHT11_Read_One_Byte(&data[0]);
         DHT11_Read_One_Byte(&data[1]);
          DHT11_Read_One_Byte(&data[2]);
-          DHT11_Read_One_Byte(&data[3]);
-          DHT11_Read_One_Byte(&data[4]);
+         DHT11_Read_One_Byte(&data[3]);
+         DHT11_Read_One_Byte(&data[4]);
        //data[i] =DHT11_ReadByte() ;  
        //data[i] = Read_Byte(); 
     //    dht11_read_byte(&data[0]);
@@ -79,35 +79,42 @@ void  main(void)
 
 	//Read_DHT11();
     //data[0]=0x2e;
-   // DHT11_Read_Data(&temp0,&temp1)    ;
+    DHT11_Read_Data(&temp0,&temp1)    ;
     //if(DHT11_Read_Data(&temp0,&temp1) ==1){
-     temp0 = data[0];
+    // temp0 = data[0];
    	vt[0] = (temp0 /10)%10;
 	vt[1] = temp0 %10;
     vt[2] = (temp0/100)%10;
     SmgDisplay_Numbers(vt[2],vt[0],vt[1]);
    __delay_ms(1000);
     
-     temp2 = data[1];
-   	 vt0[0] = (temp2 /10)%10;
-	 vt0[1] = temp2 %10;
-     vt0[2] = (temp2/100)%10;
-    SmgDisplay_Numbers(vt0[2],vt0[0],vt0[1]);
-    __delay_ms(1000);
+    //  temp2 = data[1];
+   	//  vt0[0] = (temp2 /10)%10;
+	//  vt0[1] = temp2 %10;
+    //  vt0[2] = (temp2/100)%10;
+    // SmgDisplay_Numbers(vt0[2],vt0[0],vt0[1]);
+    // __delay_ms(1000);
     
-    temp1 = data[2];
+   // temp1 = data[2];
    	 vh[0] = (temp1 /10)%10;
 	 vh[1] = temp1 %10;
      vh[2] = (temp1/100)%10;
-     SmgDisplay_Numbers(vh[2],vh[0],vh[1]);
+     SmgDisplay_Numbers( vh[2],vh[0],vh[1]);
 	 __delay_ms(1000);
      
-      temp3 = data[3];
-   	 vh0[0] =  (temp3 /10)%10;
-	 vh0[1] = temp3 %10;
-     vh0[2] = (temp3/100)%10;
-     SmgDisplay_Numbers(vh0[2],vh0[0],vh0[1]);
-	 __delay_ms(1000);
+    //   temp3 = data[3];
+   	//  vh0[0] =  (temp3 /10)%10;
+	//  vh0[1] = temp3 %10;
+    //  vh0[2] = (temp3/100)%10;
+    //  SmgDisplay_Numbers(vh0[2],vh0[0],vh0[1]);
+	//  __delay_ms(1000);
+
+    //  temp4 = data[4];
+   	//  vhl0[0] =  (temp4 /10)%10;
+	//  vhl0[1] = temp4 %10;
+    //  vhl0[2] = (temp4/100)%10;
+    //  SmgDisplay_Numbers(vhl0[2],vhl0[0],vhl0[1]);
+	//  __delay_ms(1000);
 		
 	}
     

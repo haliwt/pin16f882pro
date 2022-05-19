@@ -242,8 +242,9 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	{
 		for(i = 0; i < 5; i ++)//读取40位数据
 		{
-			//buf[i] =DHT11_Read_One_Byte();//DHT11_One_ReadByte();//DHT11_ReadByte();
-			dht11_read_byte(&buf[i]);
+			//DHT11_One_ReadByte(&buf[i]);
+			buf[0]=DHT11_ReadByte();
+			//dht11_read_byte(&buf[i]);
 		
 		}
 		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
@@ -251,7 +252,7 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 			*humi = buf[0];
 			*temp = buf[2];
 			Breath_RA0_LED =1;
-            return 1;
+           // return 1;
 		}
 	}
 	else 
@@ -330,48 +331,35 @@ uint8_t dht11_read_byte(uint8_t *byte)
 /**
 	* @brief DHT11 读取字节
 	*/
-uint8_t DHT11_One_ReadByte(void)
+uint8_t DHT11_One_ReadByte(uint8_t *pda)
 {
 	uint8_t j,retry=0,data;
+	retry=0;
 	for(j=0;j<8;j++)
 	{
+		
+		while(DHT11_DQ_DATA==1);
+		
 		while((DHT11_DQ_DATA==0) && retry <100)//等待拉高
 		{
 			__delay_us(1);
 			retry++;
 		}
-		if(retry>= 100)
-		{
-		
-			retry = 0;
-			return 0 ;
-		}else{
-			retry = 0;
-		}
-		
 		__delay_us(40);
+		
+	
 		if(DHT11_DQ_DATA==0)
 		{
 			data &= ~(1<<(7-j));
 		}
         else{
 			data |= 1<<(7-j);
-			while((DHT11_DQ_DATA==1) && retry <100)//等待拉低
-			{
-				__delay_us(1);
-				retry++;
-			}
-			if(retry>= 100)
-			{
-				//printf("time out5\r\n");
-				retry = 0;
-				return 0;
-			}else{
-				retry = 0;
-			}
+		
+			
 		}
 	}
-	return data;
+	*pda = data;
+	return 1;
 }
 
 
@@ -396,24 +384,16 @@ uint8_t DHT11_One_ReadByte(void)
 uint8_t DHT11_Read_One_Byte(uint8_t *pdata)
 {
   uint8_t data = 0;
-  uint8_t i,count=0;
-  uint16_t timeout=0;       
+  uint8_t i;
+  uint16_t timeout=0,count=0;       
    TRISAbits.TRISA5 =1;
         for(i=0;i<8;i++)
         {
-                  timeout = 55;  
-				while (DHT11_DQ_DATA==1 && timeout) ;  /* 等待变为低电平 */
-				{
-				//NOP(); 
-				__delay_us(1);
-					--timeout;
-				}
-				
-				timeout=1000;
+                timeout = 55;  
                 while((DHT11_DQ_RA5() ==0) && timeout )    // 输出位头，低电平
                 {
-                        //NOP();//
-						__delay_us(1);       
+                        NOP();//
+						//__delay_us(1);       
                         --timeout;
                 }
 				 if (!timeout) 
@@ -435,10 +415,14 @@ uint8_t DHT11_Read_One_Byte(uint8_t *pdata)
 				        return 0;           /* 超时 */
 				}
                 data <<= 1;                    // 先移位
-                if(count > 30)                // 大于30uS的为 1
+                if(count > 500)                // 大于30uS的为 1
                 {
-                    data |= 1;
+                    data = data| 0x01;
                 }
+				else{
+                    data = data| 0x00;
+
+				}
                 count = 0;
         }
         //printf("DHT11 Reader Value = 0x%02X\r\n",data);

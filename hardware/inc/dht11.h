@@ -51,7 +51,7 @@ uint8_t dht11_read_byte(uint8_t *byte);
 uint8_t DHT11_IsOnLine(void);
 
 uint8_t DHT11_ReadByte(void) ;   
-uint8_t DHT11_One_ReadByte(void);
+uint8_t DHT11_One_ReadByte(uint8_t *pda);
 uint8_t Read_Byte(void);
 
 uint8_t Read_DHT11(void);
