@@ -13,8 +13,13 @@ const unsigned char segNumber[]={
          seg_a+seg_b+seg_c+seg_f,                    		// char "7"  0x07
          seg_a+seg_b+seg_c+seg_d+seg_e+seg_f+seg_g,  		// char "8"  0x08
          seg_a+seg_b+seg_c+seg_d+seg_f+seg_g,        		// char "9"  0x09
-		 seg_b+seg_c+seg_e+seg_f+seg_g,                     // char "H"  0x0A
-         0                                      			// char "NLL"  0x0B
+		 seg_a+seg_b+seg_c+seg_e+seg_f+seg_g,               // char "A"  0x0A
+		 seg_c+seg_d+seg_e+seg_f+seg_g,                     // char "b"  0x0B
+		 seg_a+seg_d+seg_e+seg_f,							// char "C"  0X0C
+		 seg_b+seg_c+seg_d+seg_e+seg_g,						// char "d"  0x0D
+		 seg_a+seg_d+seg_e+seg_f+seg_g,                     // char "E"  0X0E
+		 seg_a+seg_e+seg_f+seg_g,                           // char "F"  0X0F
+         0                                      			// char "NLL"  0x16
                                                
                                              
 };
@@ -516,9 +521,19 @@ void Smg_TestPro(void)
 	  __delay_ms(1000);
 	  SmgDisplay_Numbers(9,9,9);
 	  __delay_ms(1000);
-	  SmgDisplay_Numbers(10,10,10);
+	  SmgDisplay_Numbers(0x0a,0x0a,0x0a);
 	  __delay_ms(1000);
 	  SmgDisplay_Numbers(0x0b,0x0b,0x0b);
+	 __delay_ms(1000);
+	  SmgDisplay_Numbers(0x0c,0x0c,0x0c);
+	 __delay_ms(1000);
+	  SmgDisplay_Numbers(0x0d,0x0d,0x0d);
+	 __delay_ms(1000);
+	  SmgDisplay_Numbers(0x0e,0x0e,0x0e);
+	 __delay_ms(1000);
+	  SmgDisplay_Numbers(0x0f,0x0f,0x0f);
+	 __delay_ms(1000);
+	  SmgDisplay_Numbers(0x10,0x10,0x10);
 	 __delay_ms(1000);
 
 }
