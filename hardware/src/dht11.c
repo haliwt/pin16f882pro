@@ -401,13 +401,13 @@ uint8_t DHT11_Read_One_Byte(void)
                 timeout=0;
                 while(!DHT11_DQ_DATA && timeout < 100)    // 输出位头，低电平
                 {
-                        __delay_us(1);       
+                        NOP();//__delay_us(1);       
                         timeout++;
                 }
                 timeout=0;
-                while(DHT11_DQ_DATA && timeout < 100)
+                while(DHT11_DQ_DATA && timeout < 100) //等待低电平
                 {
-                        __delay_us(1);
+                        NOP();//__delay_us(1);
                         timeout++;
                         count++;
                 }
