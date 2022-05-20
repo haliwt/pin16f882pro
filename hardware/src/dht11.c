@@ -192,7 +192,7 @@ uint8_t DHT11_ReadBit(uint8_t *pdat)
 		timeout= 55;
 		while((DHT11_DQ_DATA==0) && timeout) //等待变成高电平
 		{
-			timeout ++;
+			timeout --;
 			__delay_us(1);
 		}
 		if (!timeout) 
