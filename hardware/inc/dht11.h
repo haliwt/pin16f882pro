@@ -7,7 +7,7 @@
 #define DHT11_DQ_DATA                  PORTAbits.RA5 
 #define DHT11_DQ_RA5()     (PORTAbits.RA5)
 
-uint8_t  dht_dat[5];    //存储读取的温湿度信息
+extern uint8_t  dht_dat[5];    //存储读取的温湿度信息
 
 typedef unsigned char uint8_t ;
 typedef unsigned int  uint16_t ;
@@ -50,7 +50,7 @@ uint8_t dht11_read_byte(uint8_t *byte);
 
 uint8_t DHT11_IsOnLine(void);
 
-uint8_t DHT11_ReadByte(void) ;   
+uint8_t DHT11_ReadByte(uint8_t *pdata) ;   
 uint8_t DHT11_One_ReadByte(uint8_t *pda);
 uint8_t Read_Byte(void);
 

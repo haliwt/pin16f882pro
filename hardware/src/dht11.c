@@ -3,7 +3,7 @@
 
 DHT11_info dht11_t;
 
-
+uint8_t  dht_dat[5];    //存储读取的温湿度信息
 
 
  void  Delay_10us(void);
@@ -139,6 +139,7 @@ void DHT11_Reset(void)
 uint8_t DHT11_IsOnLine(void)
 {
      uint8_t retry =0;
+
 	TRISAbits.TRISA5 =1;
     while((DHT11_DQ_DATA==1) && retry < 100)//dq pull down low 40~80us
 		{
@@ -184,47 +185,65 @@ uint8_t DHT11_IsOnLine(void)
 
 /************************************************************************
 ************************************************************************/
-uint8_t DHT11_ReadBit(void) 			 
+uint8_t DHT11_ReadBit(uint8_t *pdat) 			 
 {
- 	uint8_t retry; 
-	retry = 0;
-	while((DHT11_DQ_DATA==1) && retry < 100) //等待变成低电平
-	{
-		retry ++;
-		__delay_us(1);
-	}
-	retry = 0;
+ 	uint8_t timeout,count,i,dat; 
+	for(i=0;i<8;i++){
+		timeout= 55;
+		while((DHT11_DQ_DATA==0) && timeout) //等待变成高电平
+		{
+			timeout ++;
+			__delay_us(1);
+		}
+		if (!timeout) 
+			{
+				//printk("timeout %d\n", __LINE__);         
+				return 0;           /* 超时 */
+			}
 
-	while((DHT11_DQ_DATA==0) && retry < 100)// 等待变成高电平
-	{
-		retry ++;
-		__delay_us(1);
-	}
-	__delay_us(40);
+		timeout= 90;
 
-    if(DHT11_DQ_DATA==1){
+		while((DHT11_DQ_DATA==1) && timeout)// 等待变成高电平
+		{
 		
-		return 1;
-	}
-	else{
+			__delay_us(1);
+			timeout--;
+			count++;
+		}
+		if (!timeout) 
+			{
+			// printk("timeout %d\n", __LINE__);
+			return 0;           /* 超时 */
+			}
 		
-		return 0;
+		dat = dat << 1; 
+		if(count>30){
+			
+			dat |= 0x01;
+		
+			
+		}
+	
+		count= 0;
+		
+	
 	}
-
-    
+    *pdat = dat;
+    return dat;
 }
 
 
 
-uint8_t DHT11_ReadByte(void)    
+uint8_t DHT11_ReadByte(uint8_t *pdt)    
 {        
     uint8_t i,dat;
     dat = 0;
 	for (i = 0; i < 8; i ++) 
 	{
    		dat = dat << 1; 
-	    dat |= DHT11_ReadBit() ;
-    }			    
+	    dat |= DHT11_ReadBit(pdt) ;
+    }
+	*pdt = dat;			    
     return dat;
 }
 
@@ -241,21 +260,30 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	
 	if(DHT11_IsOnLine() == 0) 
 	{
-		//for(i = 0; i < 5; i ++)//读取40位数据
+		for(i = 0; i < 5; i ++)//读取40位数据
 		{
 			//DHT11_One_ReadByte(&buf[i]);
-			buf[0]=DHT11_ReadByte();
-            buf[1]=DHT11_ReadByte();
-            buf[2]=DHT11_ReadByte();
-            buf[3]=DHT11_ReadByte();
-            buf[4]=DHT11_ReadByte();
-			//dht11_read_byte(&buf[i]);
+			// DHT11_ReadByte(&buf[0]);
+            // DHT11_ReadByte(&buf[1]);
+            // DHT11_ReadByte(&buf[2]);
+            // DHT11_ReadByte(&buf[3]);
+            // DHT11_ReadByte(&buf[4]);
+			// dht11_read_byte(&buf[0]);
+			// dht11_read_byte(&buf[1]);
+			// dht11_read_byte(&buf[2]);
+			// dht11_read_byte(&buf[3]);
+			// dht11_read_byte(&buf[4]);
+			DHT11_ReadBit(&buf[i]); 	
 		
 		}
 		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
 		{
 			*humi = buf[0];
 			*temp = buf[2];
+			dht_dat[0] = buf[0];
+			dht_dat[1] = buf[1];
+			dht_dat[2] = buf[2];
+			dht_dat[3] = buf[3];
 			Breath_RA0_LED =1;
            // return 1;
 		}
