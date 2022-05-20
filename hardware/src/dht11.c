@@ -124,11 +124,12 @@ void Time_DecValue(void)
 void DHT11_Reset(void)
 {
 	TRISAbits.TRISA5 =0;
+    DHT11_DQ_DATA =1 ; 
 	DHT11_DQ_DATA =0 ;    //A
     __delay_ms(20);
 	DHT11_DQ_DATA=1; //C
-	//__delay_us(30); //40 <data<100us
-   // TRISAbits.TRISA5 =1;
+	//__delay_us(50); //40 <data<100us
+   // DHT11_DQ_DATA=1;//
 	
 }
 
@@ -240,10 +241,14 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 	
 	if(DHT11_IsOnLine() == 0) 
 	{
-		for(i = 0; i < 5; i ++)//读取40位数据
+		//for(i = 0; i < 5; i ++)//读取40位数据
 		{
 			//DHT11_One_ReadByte(&buf[i]);
 			buf[0]=DHT11_ReadByte();
+            buf[1]=DHT11_ReadByte();
+            buf[2]=DHT11_ReadByte();
+            buf[3]=DHT11_ReadByte();
+            buf[4]=DHT11_ReadByte();
 			//dht11_read_byte(&buf[i]);
 		
 		}
@@ -428,4 +433,53 @@ uint8_t DHT11_Read_One_Byte(uint8_t *pdata)
         //printf("DHT11 Reader Value = 0x%02X\r\n",data);
 		*pdata = data;
         return 1;
+}
+
+void DHT11_Start2(void)
+{
+	TRISAbits.TRISA5 =0;
+    DHT11_DQ_DATA =1 ; 
+	DHT11_DQ_DATA =0 ;    //A
+    __delay_ms(20);
+	DHT11_DQ_DATA=1; //C
+
+    TRISAbits.TRISA5 =1;
+	if(DHT11_DQ_DATA==0){ //has a signale 
+	   while(!DHT11_DQ_DATA); //跳过ME
+	   while(DHT11_DQ_DATA);
+	   //led1=0;  //has a signale is OK
+	   Breath_RA0_LED =1;
+	}
+	else{
+
+	    //led1=1; //don't a signale is NG
+		 Breath_RA0_LED =0;
+	}
+}
+
+
+uint8_t  DHT11_Read_Byte(void)
+{
+	uint8_t i,flag,byteRead =0;
+
+	for(i=0;i<8;i++){
+
+	  while(!DHT11_DQ_DATA);  //跳过50us
+	  __delay_us(33);
+
+	  if(DHT11_DQ_DATA ==1){ //read as "1" 70us ->high
+
+	       flag =1; //
+	       while(DHT11_DQ_DATA);
+	  }
+	  else{ //read "0" 26~28us -> low 
+
+	  	   flag =0;
+	  }
+	  byteRead <<=1;
+
+	  byteRead |= flag;
+
+	}
+	return byteRead;
 }

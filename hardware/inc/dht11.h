@@ -57,5 +57,7 @@ uint8_t Read_Byte(void);
 uint8_t Read_DHT11(void);
 
 uint8_t DHT11_Read_One_Byte(uint8_t *pointer);
+void DHT11_Start2(void);
+uint8_t  DHT11_Read_Byte(void);
 
 #endif 

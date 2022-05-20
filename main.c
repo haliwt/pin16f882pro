@@ -30,6 +30,11 @@ void  main(void)
 	 
     while(1)
     {
+        
+        
+        __delay_ms(500);
+	__delay_ms(500);
+
 #if 0
         if(cmd_t.gCmd_dispTemperatureTask==1 && cmd_t.gCmd_PowerOn !=powerOn ){
             Breath_Led();
@@ -44,8 +49,7 @@ void  main(void)
 
     
   
-	//__delay_ms(500);
-	//__delay_ms(500);
+	
 #if 0
    DHT11_Reset();
    //DHT11_IsOnLine();
@@ -76,12 +80,13 @@ void  main(void)
     }
    }
 #endif 
-
+#if 1
+   __delay_ms(500);
+	__delay_ms(500);
 	//Read_DHT11();
-    //data[0]=0x2e;
     DHT11_Read_Data(&temp0,&temp1)    ;
     //if(DHT11_Read_Data(&temp0,&temp1) ==1){
-    // temp0 = data[0];
+     temp0 = data[0];
    	vt[0] = (temp0 /10)%10;
 	vt[1] = temp0 %10;
     vt[2] = (temp0/100)%10;
@@ -95,7 +100,7 @@ void  main(void)
     // SmgDisplay_Numbers(vt0[2],vt0[0],vt0[1]);
     // __delay_ms(1000);
     
-   // temp1 = data[2];
+    temp1 = data[2];
    	 vh[0] = (temp1 /10)%10;
 	 vh[1] = temp1 %10;
      vh[2] = (temp1/100)%10;
@@ -115,10 +120,13 @@ void  main(void)
     //  vhl0[2] = (temp4/100)%10;
     //  SmgDisplay_Numbers(vhl0[2],vhl0[0],vhl0[1]);
 	//  __delay_ms(1000);
-		
-	}
+#endif 		
+	
+    }
     
     
     
 }
+
+
 
