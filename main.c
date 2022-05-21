@@ -19,6 +19,7 @@ void  main(void)
 	LED_Init();
 	Peripheral_Init();
 	DHT11_Init();
+    TMR2_Initialize();
 	//EPWM_Initialize();
 	TM1617_GPIO_Iint();
     TMR1_Initialize();
@@ -46,8 +47,9 @@ void  main(void)
        // keyValue = KEY_Scan();
 	//	CheckRun_Mode(keyValue);
 	//	RunCommand();
+     
 
-    
+
   
 	
 #if 0
@@ -83,10 +85,13 @@ void  main(void)
 #if 1
    __delay_ms(500);
 	__delay_ms(500);
-	//Read_DHT11();
-    DHT11_Read_Data(&temp0,&temp1)    ;
-    //if(DHT11_Read_Data(&temp0,&temp1) ==1){
-     //temp0 = dht_dat[0];//data[0];
+
+    //DHT11_Read_Data(&temp0,&temp1)    ;
+ 	DHT11_Reset();
+	
+	if(DHT11_IsOnLine() == 0){
+    DHT11_ReadBit(&temp0); 	
+    // temp0 = DHT11_Read_Humidity();
    	vt[0] = (temp0 /10)%10;
 	vt[1] = temp0 %10;
     vt[2] = (temp0/100)%10;
@@ -120,6 +125,7 @@ void  main(void)
     //  vhl0[2] = (temp4/100)%10;
     //  SmgDisplay_Numbers(vhl0[2],vhl0[0],vhl0[1]);
 	//  __delay_ms(1000);
+    }
 #endif 		
 	
     }

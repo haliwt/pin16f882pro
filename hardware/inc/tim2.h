@@ -2,6 +2,9 @@
 #define __TIM2_H_
 #include "../../main.h"
 
+void TMR2_Initialize(void);
+
+
 void PWM2_Initialize(void);
 
 

@@ -1,11 +1,14 @@
 #include "../inc/dht11.h"
 #include <string.h>
 
+#define NUMBER 50
+ 
 DHT11_info dht11_t;
+void delay(uint16_t i);
 
 uint8_t  dht_dat[5];    //存储读取的温湿度信息
 
-
+uint8_t status = 1;
  void  Delay_10us(void);
 
 void DHT11_Init(void)
@@ -16,7 +19,14 @@ void DHT11_Init(void)
 //reset DHT11
 
 
+void delay(uint16_t i)
+{
 
+	while(i--){
+
+		__nop();
+	}
+}
 
 
 
@@ -187,48 +197,70 @@ uint8_t DHT11_IsOnLine(void)
 ************************************************************************/
 uint8_t DHT11_ReadBit(uint8_t *pdat) 			 
 {
- 	uint8_t timeout,count,i,dat; 
-	for(i=0;i<8;i++){
-		timeout= 55;
-		while((DHT11_DQ_DATA==0) && timeout) //等待变成高电平
-		{
-			timeout --;
-			__delay_us(1);
-		}
-		if (!timeout) 
-			{
-				//printk("timeout %d\n", __LINE__);         
-				return 0;           /* 超时 */
-			}
-
-		timeout= 90;
-
-		while((DHT11_DQ_DATA==1) && timeout)// 等待变成高电平
-		{
-		
-			__delay_us(1);
-			timeout--;
-			count++;
-		}
-		if (!timeout) 
-			{
-			// printk("timeout %d\n", __LINE__);
-			return 0;           /* 超时 */
-			}
-		
-		dat = dat << 1; 
-		if(count>30){
-			
-			dat |= 0x01;
-		
-			
-		}
+ 	uint8_t count,i,dat; 
+	uint16_t timeout;
+	dat=0;
 	
-		count= 0;
+	for(i=10;i>0;i--){
+
+        TRISAbits.TRISA5 =1;
+        while(DHT11_DQ_DATA==1);
+		TRISAbits.TRISA5 =1;
+		dat <<=1;
+		timeout = 0;
+		while((DHT11_DQ_DATA==0)&& (timeout< 55)) //等待变成高电平
+	    {
+            delay(1);
+            timeout++;
+            if(timeout < 55 && timeout > 45){
+
+                goto RTC;
+            }
+
+        }
+		if (timeout > 55) 
+		{
+			//printk("timeout %d\n", __LINE__); 
+		    status = 0;  
+			TIMEER_RA1_LED  =1;    
+            dat=0;
+			return 0;           /* 超时 */
+
+		}
+        
+RTC:    TRISAbits.TRISA5 =1;
+        timeout =10 ;
+         while(DHT11_DQ_DATA==0 && timeout){
+              delay(1);
+              timeout -- ;
+        }
+        if(!timeout){
+            TIMEER_RA1_LED  =1;  
+         
+            dat =0;
+            return 0;
+        }
+        delay(40);
+		timeout = 0;
+		if(DHT11_DQ_DATA == 1){
+
+            dat++;
+			while((DHT11_DQ_DATA == 1) && (timeout++ < 100));
+			if(timeout >70){
+				status = 0;
+				return 0;
+			}
+
+		}
+		
+	
 		
 	
 	}
-    *pdat = dat;
+    *pdat = dat & 0xff;
+
+	TIMEER_RA1_LED  =0;
+	Hum_RB2_LED  =0;  
     return dat;
 }
 
@@ -276,16 +308,25 @@ uint8_t DHT11_Read_Data(uint8_t *temp,uint8_t *humi)
 			DHT11_ReadBit(&buf[i]); 	
 		
 		}
-		if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
+        if(status ==0){
+                *humi = 0;
+                *temp = 0; 
+                return 0;
+        }
+        else if((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
 		{
-			*humi = buf[0];
+		    
+            buf[0]=buf[0]>>2;
+            *humi = buf[0];
+             buf[2]=buf[2]>>2;
 			*temp = buf[2];
 			dht_dat[0] = buf[0];
 			dht_dat[1] = buf[1];
 			dht_dat[2] = buf[2];
 			dht_dat[3] = buf[3];
 			Breath_RA0_LED =1;
-           // return 1;
+           
+          
 		}
 	}
 	else 
@@ -511,3 +552,125 @@ uint8_t  DHT11_Read_Byte(void)
 	}
 	return byteRead;
 }
+
+
+
+unsigned char DHT11_Read_Char(void)
+ {
+      unsigned char count,value = 0,i;
+      //GPIO0DIR_in();
+      TRISAbits.TRISA5 =1;
+      for(i=8;i>0;i--)
+      {
+          value<<=1;  //高位在先
+          count = 0;
+          //每一位数据之前都会有50us的低电平时间，等待50us低电平结束
+          while((! DHT11_DQ_DATA)&&(count++<NUMBER));
+          if(count>=NUMBER)
+          {
+              status = 0;
+              return 0;
+          }
+          /********26-28us的高电平为0,70us的高电平为1********/
+          //while(DATA_PIN); //这里一直都是高电平，则跟下面的延时无关
+              
+          delay(45);     //延时30us
+                      //30--28.7us
+                       //35--33.2us
+                       //40--37.7us
+                       //45--42.2us
+  
+          //判断数据线是否还是为高
+		  count =0 ;
+          if( DHT11_DQ_DATA)
+          {
+              value++;
+              //等待剩余的高电平（约40us）结束
+              while(( DHT11_DQ_DATA)&&(count++<(NUMBER+50)));
+              if(count>=(NUMBER+20))
+              {
+                  status = 0;
+                  return 0;
+              }
+             //while(DATA_PIN);
+          }
+      }
+      return(value);
+
+ }
+
+
+unsigned int DHT11_Read_Humidity(void)
+{ 
+      unsigned char i = 0,check_value = 0;
+      unsigned int  count = 0;
+      unsigned int  temp_value,humi_value_L,humi_value_H,humi_value;
+      unsigned char value_array[5];
+     // GPIO0DIR_out();
+	  TRISAbits.TRISA5= 0;
+	  DHT11_DQ_DATA=0;
+      //DATA0();
+      delay(22000);     //主机拉低(必须大于)18ms ，以保证DHT11能检测到起始信号
+                       //20000--18ms
+                       //25000--22ms
+                       //30000--27ms
+      //DATA1();
+	  DHT11_DQ_DATA=1;
+      //总线由上拉电阻拉高 主机延时(20us-40us)
+                                 //25--23us
+                                 //30--27us
+                                 //35--33us
+                                 //40--37us
+      //GPIO0DIR_in();
+	  TRISAbits.TRISA5= 1;
+      delay(65);          
+      //主机设为输入 判断从机响应信号 
+      
+      //判断从机是否有低电平响应信号 如不响应则跳出，响应则向下运行      
+      if(!DHT11_DQ_DATA)    //       
+      {
+          //判断从机是否发出 80us 的低电平响应信号是否结束     
+          while((!DHT11_DQ_DATA)&&(count++<(NUMBER+20)));
+          if(count>=(NUMBER+20))
+          {
+              return 0;
+          }
+         //while(DATA_BACK_0());
+         count = 0;
+         //判断从机是否发出 80us 的高电平，如发出则进入数据接收状态
+         while((DHT11_DQ_DATA)&&(count++<(NUMBER+20)));
+         if(count>=(NUMBER+20))
+         {
+             return 0;
+         }
+         //while(DATA_PIN);
+         // while(!DATA_BACK_0());
+         /***********读取温度的值*************/
+         for(i=0;i<5;i++)
+         {
+             value_array[i] = DHT11_Read_Char(); 
+ 
+             if(status == 0)
+             {
+                 return 0;
+             }
+             if(i<4)
+             {
+                 check_value+=value_array[i];    
+            }
+         }
+         /************************************/
+         //数据校验 
+         if(check_value == value_array[4])
+         {
+             //将湿度保存起来
+             humi_value_H = value_array[0];
+             humi_value_L = value_array[1];
+             humi_value_H<<=8;
+             humi_value = humi_value_H |    humi_value_L;
+         }
+     }//
+     //return humi_value;
+      return value_array[2];
+
+ }
